@@ -179,7 +179,7 @@ export function LivePreview({
                   initial
                 )}
               </div>
-              <p className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-accent">
+              <p className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-accent-ink">
                 @{slug || "your-slug"}
               </p>
               <p className="mt-0.5 text-base font-black text-foreground">

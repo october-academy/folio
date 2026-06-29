@@ -424,7 +424,7 @@ export function FolioEditor() {
               href={publicUrl || `/@${slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-w-0 flex-1 truncate font-mono text-sm font-bold text-foreground hover:text-accent"
+              className="min-w-0 flex-1 truncate font-mono text-sm font-bold text-foreground hover:text-accent-ink"
             >
               {publicUrl || `/@${slug}`}
             </a>
@@ -432,7 +432,7 @@ export function FolioEditor() {
               type="button"
               onClick={copyPublicUrl}
               aria-label="공개 URL 복사"
-              className="shrink-0 text-foreground hover:text-accent"
+              className="shrink-0 text-foreground hover:text-accent-ink"
             >
               {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             </button>

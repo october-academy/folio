@@ -55,7 +55,7 @@ export function ProfileHeader({ page }: { page: PublicFolioPage }) {
         </div>
         <div className="min-w-0 space-y-2 sm:space-y-3 lg:space-y-4">
           <div className="space-y-1 lg:space-y-2">
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-accent sm:text-sm">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-ink sm:text-sm">
               @{page.slug}
             </p>
             <h1 className="text-2xl font-black tracking-tight sm:text-3xl lg:text-4xl">

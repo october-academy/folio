@@ -104,7 +104,7 @@ export function AnalyticsPanel({
                 <div key={row.id} className="flex flex-col gap-1">
                   <div className="flex items-center justify-between gap-3 text-sm font-bold">
                     <span className="truncate">{row.title}</span>
-                    <span className="shrink-0 tabular-nums text-accent-text">
+                    <span className="shrink-0 tabular-nums text-accent-ink">
                       {metric === "revenue"
                         ? `$${row.stats.revenue.toLocaleString()}`
                         : `${row.stats.clicks.toLocaleString()} 클릭`}
@@ -154,7 +154,7 @@ export function AnalyticsPanel({
               href={posthogHost}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-fit items-center gap-1 font-bold text-accent hover:underline"
+              className="inline-flex w-fit items-center gap-1 font-bold text-accent-ink hover:underline"
             >
               PostHog 열기 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
             </a>

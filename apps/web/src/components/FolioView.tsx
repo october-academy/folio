@@ -8,7 +8,7 @@ import { ProfileHeader } from "./ProfileHeader";
 function EmptyState() {
   return (
     <section className="border-[4px] border-dashed border-foreground bg-background px-6 py-12 text-center shadow-brutal-sm sm:py-16">
-      <p className="text-xs font-black uppercase tracking-[0.24em] text-accent">Folio</p>
+      <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-ink">Folio</p>
       <h2 className="mt-2 text-xl font-black sm:text-2xl">아직 준비 중입니다</h2>
       <p className="mt-2 text-sm text-muted-foreground">곧 링크와 프로젝트를 정리해 둘게요.</p>
       <a
@@ -30,7 +30,7 @@ function FolioFooter() {
         href="https://github.com/october-academy/folio"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-xs font-bold uppercase tracking-wide text-muted-foreground hover:text-accent"
+        className="text-xs font-bold uppercase tracking-wide text-muted-foreground hover:text-accent-ink"
       >
         Made with Folio
       </a>

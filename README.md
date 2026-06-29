@@ -36,21 +36,28 @@ Folio is an open-source, self-hostable [Linktree](https://linktr.ee) alternative
 
 ### One-click
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/october-academy/folio)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/october-academy/folio/tree/main/apps/web)
 
-The button forks the repo and walks you through setup. Cloudflare reads
-[`apps/web/wrangler.jsonc`](apps/web/wrangler.jsonc), **auto-provisions the D1 database + KV namespace**
-(and writes their IDs back into the config), and prompts for each secret/var (descriptions come from
-the `cloudflare.bindings` block in [`apps/web/package.json`](apps/web/package.json)). During setup:
+The button (pointed at the `apps/web` subtree of this Turborepo) forks the repo and walks you through
+setup. Cloudflare reads [`apps/web/wrangler.jsonc`](apps/web/wrangler.jsonc) for the required bindings and
+prompts for each secret/var (descriptions come from the `cloudflare.bindings` block in
+[`apps/web/package.json`](apps/web/package.json)). During setup:
 
 - **Root directory:** `apps/web` · **Build command:** `bunx opennextjs-cloudflare build` (this is a
   Next.js app on the [OpenNext](https://opennext.js.org/cloudflare) Cloudflare adapter).
 - **Set `FOLIO_ADMIN_TOKEN`** (a long random string — gates the `/admin` editor) and
   `NEXT_PUBLIC_SITE_URL` (your `*.workers.dev` URL). PostHog + Almanac vars are optional.
-- **After the first deploy, apply the D1 schema** (one time):
+- **Provision the bindings + apply the schema.** Create the D1 database (`folio`) and KV namespace
+  (`FOLIO_CACHE`) — via the dashboard or the CLI below — bind them to the Worker, then apply the
+  migrations once:
   ```bash
+  bunx wrangler d1 create folio        # bind id → wrangler.jsonc (binding "DB")
+  bunx wrangler kv namespace create FOLIO_CACHE   # bind id → wrangler.jsonc (binding "FOLIO_CACHE")
   bunx wrangler d1 migrations apply folio --remote
   ```
+
+> If the deploy flow auto-provisions D1/KV for you, just confirm the bindings and run the migration step.
+> Either way the migration is required once — Cloudflare does not run D1 migrations automatically.
 
 ### Manual (CLI)
 

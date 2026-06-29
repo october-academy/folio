@@ -114,6 +114,9 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  /* Accent tuned for TEXT — WCAG-AA darker on light themes. Use text-accent-ink
+     for accent body text; --color-accent stays the vivid surface accent. */
+  --color-accent-ink: var(--accent-text);
   --shadow-brutal: 4px 4px 0px var(--shadow-color);
   --shadow-brutal-sm: 2px 2px 0px var(--shadow-color);
   --shadow-brutal-accent: 4px 4px 0px var(--accent);
@@ -136,9 +139,6 @@
 }
 @utility shadow-brutal-lg {
   box-shadow: 6px 6px 0px var(--shadow-color);
-}
-@utility text-accent {
-  color: var(--accent-text);
 }
 
 /* Themed keyboard-focus ring across all interactive elements. */
