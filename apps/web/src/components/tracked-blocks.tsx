@@ -7,6 +7,7 @@ import { Mail, Phone } from "lucide-react";
 import type { ReactNode } from "react";
 import { capture } from "@/lib/posthog-client";
 import { cn } from "@/lib/utils";
+import { CARD_PAD, ICON_CHIP } from "./block-chrome";
 
 /**
  * Tracked, clickable blocks (email/phone/image-with-href). Each fires a
@@ -50,13 +51,12 @@ function ContactButton({
       href={href}
       onClick={onClick}
       className={cn(
-        "group flex items-center justify-between gap-3 border-[3px] border-foreground bg-background p-3 shadow-brutal transition-transform hover:-translate-y-0.5 hover:bg-secondary sm:p-4",
+        "group flex items-center justify-between gap-3 border-[3px] border-foreground bg-background shadow-brutal transition-transform hover:-translate-y-0.5 hover:bg-secondary",
+        CARD_PAD,
       )}
     >
       <span className="flex min-w-0 items-center gap-3">
-        <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center border-[3px] border-foreground bg-secondary text-foreground shadow-brutal-sm">
-          {icon}
-        </span>
+        <span className={`${ICON_CHIP} bg-accent text-accent-foreground`}>{icon}</span>
         <span className="min-w-0">
           <span className="block truncate text-base font-black sm:text-lg">{title}</span>
           {description ? (
@@ -66,7 +66,7 @@ function ContactButton({
           ) : null}
         </span>
       </span>
-      <span className="text-lg font-black transition-transform group-hover:translate-x-0.5 sm:text-xl">
+      <span className="shrink-0 text-lg font-black transition-transform group-hover:translate-x-0.5 sm:text-xl">
         ↗
       </span>
     </a>
@@ -78,7 +78,7 @@ export function EmailBlock({ id, slug, data }: { id: string; slug: string; data:
   return (
     <ContactButton
       href={`mailto:${data.email}`}
-      icon={<Mail className="h-4 w-4" aria-hidden="true" />}
+      icon={<Mail className="h-4 w-4 sm:h-[18px] sm:w-[18px]" aria-hidden="true" />}
       title={data.title || data.email}
       description={data.description}
       onClick={() =>
@@ -93,7 +93,7 @@ export function PhoneBlock({ id, slug, data }: { id: string; slug: string; data:
   return (
     <ContactButton
       href={href}
-      icon={<Phone className="h-4 w-4" aria-hidden="true" />}
+      icon={<Phone className="h-4 w-4 sm:h-[18px] sm:w-[18px]" aria-hidden="true" />}
       title={data.title || data.phone}
       description={data.description}
       onClick={() => track({ slug, blockId: id, kind: "phone", url: href })}
@@ -102,16 +102,17 @@ export function PhoneBlock({ id, slug, data }: { id: string; slug: string; data:
 }
 
 export function ImageBlock({ id, slug, data }: { id: string; slug: string; data: ImageBlockData }) {
-  const img = (
-    <img
-      src={data.url}
-      alt={data.alt}
-      loading="lazy"
-      className="block w-full border-[3px] border-foreground shadow-brutal-sm"
-    />
-  );
   const href = data.href;
-  if (!href) return img;
+  if (!href) {
+    return (
+      <img
+        src={data.url}
+        alt={data.alt}
+        loading="lazy"
+        className="block w-full border-[3px] border-foreground shadow-brutal-sm"
+      />
+    );
+  }
   return (
     <a
       href={href}
@@ -120,9 +121,15 @@ export function ImageBlock({ id, slug, data }: { id: string; slug: string; data:
       onClick={() =>
         track({ slug, blockId: id, kind: "image", url: href, targetHost: hostOf(href) })
       }
-      className="block transition-transform hover:-translate-y-0.5"
+      className="group relative block border-[3px] border-foreground shadow-brutal transition-transform hover:-translate-y-0.5"
     >
-      {img}
+      <img src={data.url} alt={data.alt} loading="lazy" className="block w-full" />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center border-[3px] border-foreground bg-accent text-base font-black text-accent-foreground opacity-0 shadow-brutal-sm transition-opacity group-hover:opacity-100"
+      >
+        ↗
+      </span>
     </a>
   );
 }

@@ -24,8 +24,8 @@ describe("block primitives render", () => {
   });
 
   test("divider applies the size gap", () => {
-    expect(renderToStaticMarkup(<DividerBlock data={{ size: "lg" }} />)).toContain("py-4");
-    expect(renderToStaticMarkup(<DividerBlock data={{}} />)).toContain("py-2");
+    expect(renderToStaticMarkup(<DividerBlock data={{ size: "lg" }} />)).toContain("py-5");
+    expect(renderToStaticMarkup(<DividerBlock data={{}} />)).toContain("py-3");
   });
 
   test("youtube embeds the nocookie player and an optional caption", () => {

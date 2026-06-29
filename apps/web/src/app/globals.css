@@ -134,8 +134,17 @@
 @utility shadow-brutal-accent {
   box-shadow: 4px 4px 0px var(--accent);
 }
+@utility shadow-brutal-lg {
+  box-shadow: 6px 6px 0px var(--shadow-color);
+}
 @utility text-accent {
   color: var(--accent-text);
+}
+
+/* Themed keyboard-focus ring across all interactive elements. */
+:where(a, button, [tabindex], input, select, textarea):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 html {
@@ -209,4 +218,29 @@ body {
 .folio-social .icon {
   width: 20px;
   height: 20px;
+}
+
+/* Accent-filled primary CTA (empty states). Mirrors .folio-brand-button motion. */
+.folio-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--accent-foreground);
+  background: var(--accent);
+  border: 3px solid var(--foreground);
+  box-shadow: 4px 4px 0 var(--shadow-color);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.folio-empty-cta:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 6px 6px 0 var(--shadow-color);
+}
+.folio-empty-cta:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--shadow-color);
 }

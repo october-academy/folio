@@ -40,9 +40,9 @@ function SocialButtons({ socials }: { socials: PublicFolioPage["socials"] }) {
 export function ProfileHeader({ page }: { page: PublicFolioPage }) {
   const initial = page.display_name.replace(/^@/, "").charAt(0).toUpperCase();
   return (
-    <section className="border-[4px] border-foreground bg-background p-5 shadow-brutal sm:p-7">
-      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:gap-6 sm:text-left">
-        <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden border-[4px] border-foreground bg-accent text-3xl font-black text-accent-foreground shadow-brutal sm:order-last sm:h-24 sm:w-24">
+    <section className="border-[4px] border-foreground bg-background p-4 shadow-brutal sm:p-6 lg:p-8">
+      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:justify-between sm:gap-6 sm:text-left">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden border-[4px] border-foreground bg-accent text-2xl font-black text-accent-foreground shadow-brutal-sm sm:order-last sm:h-20 sm:w-20 sm:shadow-brutal lg:h-28 lg:w-28 lg:text-3xl">
           {page.avatar_url ? (
             <img
               src={page.avatar_url}
@@ -53,15 +53,19 @@ export function ProfileHeader({ page }: { page: PublicFolioPage }) {
             initial || "F"
           )}
         </div>
-        <div className="min-w-0 space-y-3">
-          <div className="space-y-1">
+        <div className="min-w-0 space-y-2 sm:space-y-3 lg:space-y-4">
+          <div className="space-y-1 lg:space-y-2">
             <p className="text-xs font-black uppercase tracking-[0.24em] text-accent sm:text-sm">
               @{page.slug}
             </p>
-            <h1 className="text-2xl font-black tracking-tight sm:text-3xl">{page.display_name}</h1>
+            <h1 className="text-2xl font-black tracking-tight sm:text-3xl lg:text-4xl">
+              {page.display_name}
+            </h1>
           </div>
           {page.description ? (
-            <p className="text-sm leading-6 text-foreground/80 sm:text-base">{page.description}</p>
+            <p className="line-clamp-2 text-sm leading-6 text-foreground/80 sm:line-clamp-none sm:max-w-xl sm:text-base sm:leading-7">
+              {page.description}
+            </p>
           ) : null}
           <SocialButtons socials={page.socials} />
         </div>

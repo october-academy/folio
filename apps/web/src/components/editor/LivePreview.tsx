@@ -99,7 +99,7 @@ function PreviewBlock({ block }: { block: EditorBlock }) {
   if (block.type === "qr") {
     return (
       <div className="flex flex-col items-center gap-1 border-[3px] border-foreground bg-background p-3 shadow-brutal-sm">
-        <QrCode className="h-12 w-12 text-foreground" />
+        <QrCode className="h-16 w-16 text-foreground" />
         {d.caption ? <span className="truncate text-xs font-bold">{String(d.caption)}</span> : null}
       </div>
     );
@@ -152,68 +152,82 @@ export function LivePreview({
       : undefined;
   return (
     <aside className="xl:sticky xl:top-6 xl:self-start">
-      <div className="mb-3 border-[3px] border-foreground bg-foreground px-3 py-2 text-xs font-black uppercase tracking-wide text-background">
+      <div className="mb-3 flex items-center gap-2 border-[3px] border-foreground bg-foreground px-3 py-2 text-xs font-black uppercase tracking-wide text-background">
+        <span className="h-2 w-2 animate-pulse rounded-full bg-accent" aria-hidden="true" />
         실시간 미리보기
       </div>
-      <div
-        className={cn(
-          `theme-${theme}`,
-          "mx-auto w-full max-w-[360px] border-[4px] border-foreground bg-secondary p-4 shadow-brutal",
-        )}
-        style={customStyle}
-      >
-        <div className="flex flex-col items-center gap-3 text-center">
-          <div className="flex h-16 w-16 items-center justify-center overflow-hidden border-[3px] border-foreground bg-accent text-2xl font-black text-accent-foreground shadow-brutal-sm">
-            {avatarUrl ? (
-              <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
-            ) : (
-              initial
-            )}
-          </div>
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">
-              @{slug || "your-slug"}
-            </p>
-            <p className="mt-1 text-lg font-black text-foreground">{displayName || "Your Name"}</p>
-            {description ? <p className="mt-1 text-xs text-foreground/70">{description}</p> : null}
-          </div>
-          {socials.filter((s) => s.url.trim()).length > 0 ? (
-            <div className="flex flex-wrap justify-center gap-1.5">
-              {socials
-                .filter((s) => s.url.trim() && s.brand)
-                .map((s) => {
-                  const spec = getBrand(s.brand);
-                  return (
-                    <span
-                      key={`${s.brand}-${s.url}`}
-                      className={`button button-${s.brand} folio-social`}
-                      style={{ width: 36, height: 36 }}
-                    >
-                      {spec ? (
-                        <img
-                          className="icon"
-                          src={`/brand-icons/${spec.icon}.svg`}
-                          alt=""
-                          width={16}
-                          height={16}
-                        />
-                      ) : (
-                        <Link2 className="h-4 w-4" />
-                      )}
-                    </span>
-                  );
-                })}
-            </div>
-          ) : null}
-        </div>
-        <div className="mt-4 flex flex-col gap-2">
-          {visible.length > 0 ? (
-            visible.map((block) => <PreviewBlock key={block.id} block={block} />)
-          ) : (
-            <p className="border-[3px] border-dashed border-foreground bg-background px-3 py-6 text-center text-xs text-muted-foreground">
-              블록을 추가하면 여기에 표시됩니다.
-            </p>
+      {/* Phone chassis — the device shell (no theme class). */}
+      <div className="mx-auto w-full max-w-[340px] rounded-[40px] border-[4px] border-foreground bg-foreground p-2.5 shadow-brutal sm:max-w-[360px]">
+        {/* Inner screen carries the theme + custom palette → re-themes live, exactly
+            like the real public page (bg-background, not the editor's bg-secondary). */}
+        <div
+          className={cn(
+            `theme-${theme}`,
+            "relative overflow-hidden rounded-[30px] border-[3px] border-foreground bg-background",
           )}
+          style={customStyle}
+        >
+          <div className="flex items-center justify-center pt-2.5" aria-hidden="true">
+            <div className="h-1.5 w-16 rounded-full bg-foreground/30" />
+          </div>
+          <div className="max-h-[560px] overflow-y-auto px-4 pb-5 pt-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="border-[3px] border-foreground bg-background p-3 text-center shadow-brutal-sm">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center overflow-hidden border-[3px] border-foreground bg-accent text-xl font-black text-accent-foreground shadow-brutal-sm">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  initial
+                )}
+              </div>
+              <p className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-accent">
+                @{slug || "your-slug"}
+              </p>
+              <p className="mt-0.5 text-base font-black text-foreground">
+                {displayName || "Your Name"}
+              </p>
+              {description ? (
+                <p className="mt-1 text-xs text-foreground/70">{description}</p>
+              ) : null}
+              {socials.filter((s) => s.url.trim()).length > 0 ? (
+                <div className="mt-2 flex flex-wrap justify-center gap-1.5">
+                  {socials
+                    .filter((s) => s.url.trim() && s.brand)
+                    .map((s) => {
+                      const spec = getBrand(s.brand);
+                      return (
+                        <span
+                          key={`${s.brand}-${s.url}`}
+                          title={spec?.label ?? s.brand}
+                          className={`button button-${s.brand} folio-social`}
+                          style={{ width: 34, height: 34 }}
+                        >
+                          {spec ? (
+                            <img
+                              className="icon"
+                              src={`/brand-icons/${spec.icon}.svg`}
+                              alt=""
+                              width={16}
+                              height={16}
+                            />
+                          ) : (
+                            <Link2 className="h-4 w-4" />
+                          )}
+                        </span>
+                      );
+                    })}
+                </div>
+              ) : null}
+            </div>
+            <div className="mt-3 flex flex-col gap-2">
+              {visible.length > 0 ? (
+                visible.map((block) => <PreviewBlock key={block.id} block={block} />)
+              ) : (
+                <p className="border-[3px] border-dashed border-foreground bg-background px-3 py-6 text-center text-xs text-muted-foreground">
+                  블록을 추가하면 여기에 표시됩니다.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </aside>

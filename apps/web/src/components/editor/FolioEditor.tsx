@@ -15,6 +15,7 @@ import {
   Loader2,
   Plus,
   Trash2,
+  TriangleAlert,
   Upload,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -402,37 +403,63 @@ export function FolioEditor() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
+      <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex items-center justify-between gap-3 lg:justify-start">
           <h1 className="text-3xl font-black">Folio 편집기</h1>
-          <button
-            type="button"
-            onClick={copyPublicUrl}
-            className="mt-1 inline-flex items-center gap-1.5 text-sm font-bold text-accent hover:underline"
-          >
-            {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-            {publicUrl || `/@${slug}`}
-          </button>
-        </div>
-        <div className="flex items-center gap-3">
           {authEmail ? (
             <span className="hidden text-sm font-bold text-muted-foreground sm:inline">
               {authEmail}
             </span>
           ) : null}
-          <Button variant="outline" onClick={signOut}>
+          <Button variant="outline" onClick={signOut} className="lg:hidden">
+            로그아웃
+          </Button>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-center gap-2 border-[3px] border-foreground bg-secondary px-3 py-2 shadow-brutal-sm lg:flex-none">
+            <span className="text-[10px] font-black uppercase tracking-wide text-muted-foreground">
+              공개 URL
+            </span>
+            <a
+              href={publicUrl || `/@${slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="min-w-0 flex-1 truncate font-mono text-sm font-bold text-foreground hover:text-accent"
+            >
+              {publicUrl || `/@${slug}`}
+            </a>
+            <button
+              type="button"
+              onClick={copyPublicUrl}
+              aria-label="공개 URL 복사"
+              className="shrink-0 text-foreground hover:text-accent"
+            >
+              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            </button>
+          </div>
+          <Button variant="outline" onClick={signOut} className="hidden lg:inline-flex">
             로그아웃
           </Button>
         </div>
       </div>
 
       {error ? (
-        <div className="mb-4 border-[3px] border-foreground bg-accent px-4 py-2 text-sm font-bold text-accent-foreground shadow-brutal-sm">
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="mb-4 flex items-center gap-2 border-[3px] border-l-[8px] border-foreground bg-accent px-4 py-2 text-sm font-bold text-accent-foreground shadow-brutal-sm"
+        >
+          <TriangleAlert className="h-4 w-4 shrink-0" aria-hidden="true" />
           {error}
         </div>
       ) : null}
       {message ? (
-        <div className="mb-4 border-[3px] border-foreground bg-background px-4 py-2 text-sm font-bold shadow-brutal-sm">
+        <div
+          role="status"
+          aria-live="polite"
+          className="mb-4 flex items-center gap-2 border-[3px] border-foreground bg-foreground px-4 py-2 text-sm font-bold text-background shadow-brutal-sm"
+        >
+          <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
           {message}
         </div>
       ) : null}
@@ -763,36 +790,66 @@ function BlockEditor({
       onDragStart={onDragStart}
       onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
-      className="border-[3px] border-foreground bg-secondary p-3 shadow-brutal-sm"
+      className={cn(
+        "border-[3px] border-foreground bg-secondary p-3 shadow-brutal-sm transition-opacity",
+        !block.is_visible && "opacity-60",
+      )}
     >
-      <div className="mb-3 flex items-center justify-between gap-2">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <span className="flex items-center gap-2">
-          <GripVertical className="h-4 w-4 cursor-grab text-muted-foreground" />
-          <span className="text-xs font-black uppercase tracking-wide text-muted-foreground">
-            #{index + 1} {blockTypeLabel(block.type)} {block.isDraft ? "· 새 블록" : ""}
+          <span className="inline-flex h-9 w-9 cursor-grab items-center justify-center border-[3px] border-foreground bg-background shadow-brutal-sm">
+            <GripVertical className="h-4 w-4 text-muted-foreground" />
+          </span>
+          <span className="flex flex-col leading-tight">
+            <span className="text-[10px] font-black uppercase tracking-wide text-muted-foreground">
+              {blockTypeLabel(block.type)} {block.isDraft ? "· 새 블록" : ""}
+            </span>
+            <span className="text-base font-black">#{index + 1}</span>
           </span>
         </span>
         <div className="flex items-center gap-1.5">
           <Button
             variant="outline"
+            size="icon"
+            aria-label={block.is_visible ? "블록 숨기기" : "블록 표시"}
+            aria-pressed={!block.is_visible}
             onClick={() => onUpdate(block.id, { is_visible: !block.is_visible })}
           >
             {block.is_visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
           </Button>
-          <Button variant="outline" onClick={() => onMove(block.id, -1)} disabled={index === 0}>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="위로 이동"
+            onClick={() => onMove(block.id, -1)}
+            disabled={index === 0}
+          >
             <ArrowUp className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
+            size="icon"
+            aria-label="아래로 이동"
             onClick={() => onMove(block.id, 1)}
             disabled={index === total - 1}
           >
             <ArrowDown className="h-4 w-4" />
           </Button>
-          <Button data-testid="block-save" onClick={() => onPersist(block)} disabled={busy}>
+          <Button
+            data-testid="block-save"
+            size="sm"
+            onClick={() => onPersist(block)}
+            disabled={busy}
+          >
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null} 저장
           </Button>
-          <Button variant="outline" onClick={() => onRemove(block.id)} disabled={busy}>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="블록 삭제"
+            onClick={() => onRemove(block.id)}
+            disabled={busy}
+          >
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
