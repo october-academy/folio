@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: MIT
 import { describe, expect, test } from "bun:test";
 import { MAX_BLOCKS, normalizeBlockData, normalizeReorderPayload } from "./blocks";
-import { normalizeSocials, normalizeTheme, THEMES, validateSocials } from "./page";
+import {
+  customThemeStyle,
+  normalizeCustomTheme,
+  normalizeSocials,
+  normalizeTheme,
+  THEMES,
+  validateSocials,
+} from "./page";
 import { isReservedSlug, validateSlug } from "./slug";
 import {
   extractYouTubeId,
@@ -254,5 +261,29 @@ describe("themes", () => {
 
   test("every THEME normalizes back to itself", () => {
     for (const t of THEMES) expect(normalizeTheme(t)).toBe(t);
+  });
+
+  test("custom is a valid theme", () => {
+    expect(normalizeTheme("custom")).toBe("custom");
+  });
+
+  test("normalizeCustomTheme keeps known hex vars, drops the rest (injection-safe)", () => {
+    expect(
+      normalizeCustomTheme({
+        background: "#FFF",
+        accent: "#ff6b35",
+        evil: "url(javascript:alert(1))", // unknown key dropped
+        foreground: "red", // non-hex dropped
+        border: "#12345678", // 8-digit hex ok
+      }),
+    ).toEqual({ background: "#fff", accent: "#ff6b35", border: "#12345678" });
+    expect(normalizeCustomTheme("nope")).toEqual({});
+  });
+
+  test("customThemeStyle maps to --css-variables", () => {
+    expect(customThemeStyle({ background: "#000", accent: "#fff" })).toEqual({
+      "--background": "#000",
+      "--accent": "#fff",
+    });
   });
 });

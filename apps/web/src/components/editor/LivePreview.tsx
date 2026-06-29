@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 import { getBrand } from "@folio/buttons";
-import { extractYouTubeId } from "@folio/core";
+import { customThemeStyle, extractYouTubeId, normalizeCustomTheme } from "@folio/core";
 import { ContactRound, Link2, Mail, Phone, Play, QrCode } from "lucide-react";
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import type { EditorBlock, SocialDraft } from "./editor-helpers";
 
@@ -130,6 +131,7 @@ export function LivePreview({
   description,
   avatarUrl,
   theme,
+  customTheme,
   socials,
   blocks,
 }: {
@@ -138,11 +140,16 @@ export function LivePreview({
   description: string;
   avatarUrl: string;
   theme: string;
+  customTheme?: Record<string, string>;
   socials: SocialDraft[];
   blocks: EditorBlock[];
 }) {
   const visible = blocks.filter((b) => b.is_visible);
   const initial = (displayName || "F").trim().charAt(0).toUpperCase();
+  const customStyle =
+    theme === "custom" && customTheme
+      ? (customThemeStyle(normalizeCustomTheme(customTheme)) as CSSProperties)
+      : undefined;
   return (
     <aside className="xl:sticky xl:top-6 xl:self-start">
       <div className="mb-3 border-[3px] border-foreground bg-foreground px-3 py-2 text-xs font-black uppercase tracking-wide text-background">
@@ -153,6 +160,7 @@ export function LivePreview({
           `theme-${theme}`,
           "mx-auto w-full max-w-[360px] border-[4px] border-foreground bg-secondary p-4 shadow-brutal",
         )}
+        style={customStyle}
       >
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="flex h-16 w-16 items-center justify-center overflow-hidden border-[3px] border-foreground bg-accent text-2xl font-black text-accent-foreground shadow-brutal-sm">

@@ -8,6 +8,7 @@ import {
   type FolioPage,
   type FolioPageRow,
   type LinkBlockData,
+  normalizeCustomTheme,
   normalizeSettings,
   normalizeSocials,
   normalizeTheme,
@@ -337,12 +338,15 @@ export async function getPublicPage(slug: string): Promise<PublicFolioPage | nul
     .map((b) => ({ id: b.id, type: b.type, data: resolveBlockData(b) }));
 
   const siteUrl = getSiteUrl();
+  const customTheme =
+    page.theme === "custom" ? normalizeCustomTheme(page.settings.custom_theme) : undefined;
   return {
     slug: page.slug,
     display_name: page.display_name || `@${page.slug}`,
     description: page.description ?? "",
     avatar_url: page.avatar_url,
     theme: page.theme,
+    ...(customTheme ? { custom_theme: customTheme } : {}),
     socials: page.socials,
     blocks: publicBlocks,
     page_url: `${siteUrl}/@${page.slug}`,

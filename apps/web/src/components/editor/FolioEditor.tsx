@@ -26,6 +26,7 @@ import {
   BLOCK_TYPE_OPTIONS,
   BRAND_OPTIONS,
   blockTypeLabel,
+  CUSTOM_THEME_FIELDS,
   createDraftBlock,
   type EditorBlock,
   reorderBlocks,
@@ -55,6 +56,7 @@ export function FolioEditor() {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [description, setDescription] = useState("");
   const [theme, setTheme] = useState("auto");
+  const [customTheme, setCustomTheme] = useState<Record<string, string>>({});
   const [socials, setSocials] = useState<SocialDraft[]>([]);
   const [blocks, setBlocks] = useState<EditorBlock[]>([]);
   const [newBlockType, setNewBlockType] = useState<BlockType>("link");
@@ -103,6 +105,7 @@ export function FolioEditor() {
           description: string | null;
           theme: string;
           socials: SocialDraft[];
+          settings?: { custom_theme?: Record<string, string> };
         };
         blocks: Array<{
           id: string;
@@ -121,6 +124,7 @@ export function FolioEditor() {
       setAvatarUrl(data.page.avatar_url ?? "");
       setDescription(data.page.description ?? "");
       setTheme(data.page.theme ?? "auto");
+      setCustomTheme(data.page.settings?.custom_theme ?? {});
       setSocials(Array.isArray(data.page.socials) ? data.page.socials : []);
       setBlocks(
         (data.blocks ?? [])
@@ -192,6 +196,7 @@ export function FolioEditor() {
           socials: socials
             .filter((s) => s.url.trim() && s.brand.trim())
             .map((s) => ({ brand: s.brand.trim(), url: s.url.trim() })),
+          settings: { custom_theme: customTheme },
         }),
       });
       if (!res.ok) throw new Error((await errorOf(res)) ?? "프로필 저장 실패");
@@ -483,6 +488,31 @@ export function FolioEditor() {
                     ))}
                   </Select>
                 </Field>
+                {theme === "custom" ? (
+                  <div className="border-[3px] border-foreground bg-secondary p-3">
+                    <p className="mb-2 text-xs font-black uppercase tracking-wide text-muted-foreground">
+                      커스텀 색상
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                      {CUSTOM_THEME_FIELDS.map((f) => (
+                        <label key={f.var} className="flex items-center gap-2 text-xs font-bold">
+                          <input
+                            type="color"
+                            value={customTheme[f.var] ?? f.fallback}
+                            onChange={(e) =>
+                              setCustomTheme((c) => ({ ...c, [f.var]: e.target.value }))
+                            }
+                            className="h-7 w-9 shrink-0 cursor-pointer border-[2px] border-foreground bg-background"
+                          />
+                          <span className="truncate">{f.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      저장하면 공개 페이지에 적용됩니다.
+                    </p>
+                  </div>
+                ) : null}
                 <SocialsEditor socials={socials} setSocials={setSocials} />
               </div>
             </section>
@@ -592,6 +622,7 @@ export function FolioEditor() {
             description={description}
             avatarUrl={avatarUrl}
             theme={theme}
+            customTheme={customTheme}
             socials={socials}
             blocks={blocks}
           />

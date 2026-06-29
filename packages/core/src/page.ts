@@ -16,10 +16,60 @@ export const MAX_SOCIALS = 6;
  * Theme presets. `auto`/`light`/`dark` are the base modes; the rest are named
  * CSS-variable palettes defined as `.theme-<name>` in globals.css (SPEC §8).
  */
-export const THEMES = ["auto", "light", "dark", "mint", "grape", "sunset", "midnight"] as const;
+export const THEMES = [
+  "auto",
+  "light",
+  "dark",
+  "mint",
+  "grape",
+  "sunset",
+  "midnight",
+  "custom",
+] as const;
 export type Theme = (typeof THEMES)[number];
 
 const THEME_SET: ReadonlySet<string> = new Set(THEMES);
+
+/** CSS-variable names a uploaded/custom theme may override (without the `--`). */
+export const CUSTOM_THEME_VARS = [
+  "background",
+  "foreground",
+  "secondary",
+  "muted",
+  "muted-foreground",
+  "border",
+  "accent",
+  "accent-foreground",
+  "accent-text",
+] as const;
+export type CustomThemeVar = (typeof CUSTOM_THEME_VARS)[number];
+export type CustomTheme = Partial<Record<CustomThemeVar, string>>;
+
+const CUSTOM_VAR_SET: ReadonlySet<string> = new Set(CUSTOM_THEME_VARS);
+// Hex colors only — eliminates any CSS-injection surface from user input.
+const HEX_COLOR = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+
+/** Keep only known variables with valid hex values (defense against injection). */
+export function normalizeCustomTheme(value: unknown): CustomTheme {
+  if (!value || typeof value !== "object") return {};
+  const out: CustomTheme = {};
+  for (const [key, raw] of Object.entries(value as Record<string, unknown>)) {
+    if (!CUSTOM_VAR_SET.has(key) || typeof raw !== "string") continue;
+    const v = raw.trim().toLowerCase();
+    if (HEX_COLOR.test(v)) out[key as CustomThemeVar] = v;
+  }
+  return out;
+}
+
+/** An inline-style object of `--var` declarations for a custom theme. */
+export function customThemeStyle(theme: CustomTheme): Record<string, string> {
+  const style: Record<string, string> = {};
+  for (const key of CUSTOM_THEME_VARS) {
+    const v = theme[key];
+    if (v) style[`--${key}`] = v;
+  }
+  return style;
+}
 
 export const socialSchema = z.object({
   brand: z.string().regex(BRAND_KEY_PATTERN),
@@ -135,10 +185,14 @@ export function buildPageSettingsUpdate(params: {
     update.socials = socials.value;
   }
   if ("settings" in body) {
-    update.settings = normalizeSettings({
+    const merged = normalizeSettings({
       ...current.settings,
       ...normalizeSettings(body.settings),
     });
+    if ("custom_theme" in merged) {
+      merged.custom_theme = normalizeCustomTheme(merged.custom_theme);
+    }
+    update.settings = merged;
   }
   return { value: update };
 }

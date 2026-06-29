@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-import type { PublicFolioPage } from "@folio/core";
+import { customThemeStyle, type PublicFolioPage } from "@folio/core";
+import type { CSSProperties } from "react";
 import { BlockRenderer } from "./blocks";
 import { FolioTracker } from "./FolioTracker";
 import { ProfileHeader } from "./ProfileHeader";
@@ -43,9 +44,16 @@ export function FolioView({ page }: { page: PublicFolioPage }) {
     url: page.page_url,
   };
   const ldJson = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+  const customStyle =
+    page.theme === "custom" && page.custom_theme
+      ? (customThemeStyle(page.custom_theme) as CSSProperties)
+      : undefined;
 
   return (
-    <main className={`theme-${page.theme} min-h-screen bg-secondary px-4 py-8 sm:py-12`}>
+    <main
+      className={`theme-${page.theme} min-h-screen bg-secondary px-4 py-8 sm:py-12`}
+      style={customStyle}
+    >
       <FolioTracker slug={page.slug} />
       {/* biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is JSON.stringify'd and < is escaped to < */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson }} />

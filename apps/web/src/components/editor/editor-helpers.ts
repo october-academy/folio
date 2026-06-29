@@ -12,6 +12,20 @@ export const THEME_OPTIONS: Array<{ value: string; label: string }> = [
   { value: "grape", label: "그레이프" },
   { value: "sunset", label: "선셋" },
   { value: "midnight", label: "미드나잇" },
+  { value: "custom", label: "커스텀" },
+];
+
+/** Korean labels + starting hex for the custom-theme color editor. */
+export const CUSTOM_THEME_FIELDS: Array<{ var: string; label: string; fallback: string }> = [
+  { var: "background", label: "배경", fallback: "#ffffff" },
+  { var: "foreground", label: "글자", fallback: "#0a0a0a" },
+  { var: "secondary", label: "보조 배경", fallback: "#f5f5f5" },
+  { var: "muted", label: "흐린 배경", fallback: "#e5e5e5" },
+  { var: "muted-foreground", label: "흐린 글자", fallback: "#737373" },
+  { var: "border", label: "테두리", fallback: "#e5e5e5" },
+  { var: "accent", label: "강조", fallback: "#ff6b35" },
+  { var: "accent-foreground", label: "강조 글자", fallback: "#ffffff" },
+  { var: "accent-text", label: "강조 텍스트", fallback: "#e85a28" },
 ];
 
 export const BLOCK_TYPE_OPTIONS: Array<{ value: BlockType; label: string }> = [

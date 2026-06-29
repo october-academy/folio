@@ -60,6 +60,13 @@ bunx opennextjs-cloudflare build && bunx wrangler deploy
 Open `https://<your-worker>.workers.dev/admin`, paste your `FOLIO_ADMIN_TOKEN`, and build your page.
 Your public page is at `/@<slug>`.
 
+### Custom domain
+
+Map your own domain in the Cloudflare dashboard → **Workers & Pages → your Worker → Settings →
+Domains & Routes → Add → Custom Domain** (e.g. `links.example.com`), or add a `routes` entry to
+`wrangler.jsonc`. Cloudflare provisions the TLS cert automatically. Set `NEXT_PUBLIC_SITE_URL` to the
+custom domain so OG images and canonical links resolve correctly.
+
 ## Local development
 
 ```bash

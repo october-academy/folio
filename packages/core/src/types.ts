@@ -4,7 +4,7 @@
  * repository and the renderers.
  */
 import type { BlockData, BlockType } from "./blocks";
-import type { Social, Theme } from "./page";
+import type { CustomTheme, Social, Theme } from "./page";
 
 /** A row in the D1 `pages` table. JSON columns are stored as TEXT. */
 export type FolioPageRow = {
@@ -95,6 +95,8 @@ export type PublicFolioPage = {
   description: string;
   avatar_url: string | null;
   theme: Theme;
+  /** Resolved CSS-variable overrides when `theme === "custom"` (else undefined). */
+  custom_theme?: CustomTheme;
   socials: Social[];
   blocks: PublicBlock[];
   page_url: string;
