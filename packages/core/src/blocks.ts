@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /**
  * Block taxonomy — the single source of truth for Folio's typed blocks.
  *

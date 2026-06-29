@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { MAX_BLOCKS } from "@folio/core";
 import { normalizeIncomingBlock } from "@/lib/block-input";
 import { allowHttpLocal } from "@/lib/cf";

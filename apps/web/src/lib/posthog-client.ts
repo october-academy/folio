@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import posthog from "posthog-js";
 
 let initialized = false;

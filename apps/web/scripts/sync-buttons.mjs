@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: MIT
 /**
  * Copy LittleLink brand assets from @folio/buttons into the web app so Next can
  * serve them: brands.css → src/app/brands.css, icons → public/brand-icons/.

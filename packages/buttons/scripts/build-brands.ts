@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /**
  * Build step: parse LittleLink's brands.css (+ the extracted catalog) into a
  * typed brand manifest (`src/brands.generated.ts`). SPEC §7.

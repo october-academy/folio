@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /**
  * Page-level normalization: socials, theme, settings, and the settings-update
  * builder. Storage-agnostic (no Supabase, no D1 here).

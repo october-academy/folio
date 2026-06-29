@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 import type { NextConfig } from "next";
 

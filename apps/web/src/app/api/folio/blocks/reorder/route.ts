@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { normalizeReorderPayload } from "@folio/core";
 import { blockIdsOnPage, reorderBlocks } from "@/lib/db";
 import { badRequest, invalidate, withEditorPage } from "@/lib/editor-api";

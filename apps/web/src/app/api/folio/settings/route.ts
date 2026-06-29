@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { buildPageSettingsUpdate } from "@folio/core";
 import { allowHttpLocal } from "@/lib/cf";
 import { getPageById, updatePageSettings } from "@/lib/db";

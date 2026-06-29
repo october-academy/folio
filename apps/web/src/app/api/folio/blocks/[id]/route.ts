@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { normalizeIncomingBlock } from "@/lib/block-input";
 import { allowHttpLocal } from "@/lib/cf";
 import { deleteBlock, getBlock, updateBlock } from "@/lib/db";

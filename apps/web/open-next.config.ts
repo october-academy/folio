@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { defineCloudflareConfig, type OpenNextConfig } from "@opennextjs/cloudflare/config";
 
 const cloudflareConfig = defineCloudflareConfig({});

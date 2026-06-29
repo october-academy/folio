@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /**
  * URL → platform auto-detect — Folio's original feature (neither LittleLink nor
  * LinkStack does this). When a user pastes a link, map its hostname to a

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /**
  * Framework-free validation/normalization helpers shared across Folio.
  * Ported (storage-agnostic subset) from the Agentic30 bio server lib.

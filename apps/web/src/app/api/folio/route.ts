@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { getSiteUrl } from "@/lib/cf";
 import { listBlocks } from "@/lib/db";
 import { withEditorPage } from "@/lib/editor-api";

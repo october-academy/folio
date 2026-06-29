@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import type { DividerBlockData, HeadingBlockData, TextBlockData } from "@folio/core";
 
 /** Static (server-renderable) block renderers — no client/tracking deps. */

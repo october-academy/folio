@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { ImageResponse } from "next/og";
 import { loadPublicPage } from "@/lib/public-page";
 

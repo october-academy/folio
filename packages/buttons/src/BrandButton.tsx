@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import type { AnchorHTMLAttributes } from "react";
 import { BRANDS, type BrandSpec } from "./brands.generated";
 

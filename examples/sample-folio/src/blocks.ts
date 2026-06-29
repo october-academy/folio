@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { detectBrand } from "@folio/buttons";
 import { type NormalizedBlock, normalizeBlockData } from "@folio/core";
 

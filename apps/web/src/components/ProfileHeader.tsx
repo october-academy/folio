@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { getBrand } from "@folio/buttons";
 import type { PublicFolioPage } from "@folio/core";
 import { Link2 } from "lucide-react";

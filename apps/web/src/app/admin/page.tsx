@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import type { Metadata } from "next";
 import { FolioEditor } from "@/components/editor/FolioEditor";
 

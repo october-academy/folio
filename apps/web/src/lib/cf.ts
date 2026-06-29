@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import "server-only";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 

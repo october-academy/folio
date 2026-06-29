@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /**
  * Slug rules for Folio public pages (`/@slug` and `/[slug]`).
  * Pattern matches the Agentic30 bio slug rule: 3–30 chars, a–z 0–9 and hyphen,

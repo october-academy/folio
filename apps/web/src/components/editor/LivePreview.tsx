@@ -1,4 +1,5 @@
 "use client";
+// SPDX-License-Identifier: MIT
 
 import { getBrand } from "@folio/buttons";
 import { Link2 } from "lucide-react";

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { describe, expect, test } from "bun:test";
 import { MAX_BLOCKS, normalizeBlockData, normalizeReorderPayload } from "./blocks";
 import { normalizeSocials, validateSocials } from "./page";

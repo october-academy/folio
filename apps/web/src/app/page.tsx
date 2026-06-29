@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FolioView } from "@/components/FolioView";

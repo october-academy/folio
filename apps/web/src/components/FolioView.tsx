@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import type { PublicFolioPage } from "@folio/core";
 import { BlockRenderer } from "./blocks";
 import { FolioTracker } from "./FolioTracker";

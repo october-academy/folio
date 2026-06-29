@@ -1,4 +1,5 @@
 "use client";
+// SPDX-License-Identifier: MIT
 
 import { useEffect } from "react";
 import { initPostHog } from "@/lib/posthog-client";

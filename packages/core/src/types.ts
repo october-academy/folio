@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /**
  * Storage row types (D1) and the public-page view types shared by the
  * repository and the renderers.

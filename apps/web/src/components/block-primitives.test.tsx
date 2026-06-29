@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { describe, expect, test } from "bun:test";
 import { BrandButton } from "@folio/buttons";
 import { renderToStaticMarkup } from "react-dom/server";

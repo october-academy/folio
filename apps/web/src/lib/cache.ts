@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import "server-only";
 import type { PublicFolioPage } from "@folio/core";
 import { getEnv } from "./cf";

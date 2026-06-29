@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import "server-only";
 import type { FolioPage } from "@folio/core";
 import { requireAuth } from "./auth";

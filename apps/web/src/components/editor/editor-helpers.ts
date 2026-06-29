@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import { BRAND_KEYS, BRANDS } from "@folio/buttons";
 import type { BlockType } from "@folio/core";
 

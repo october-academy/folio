@@ -1,4 +1,5 @@
 "use client";
+// SPDX-License-Identifier: MIT
 
 import { BrandButton, getBrand } from "@folio/buttons";
 import { hostnameOf, type LinkBlockData } from "@folio/core";

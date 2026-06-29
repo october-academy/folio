@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 /** @folio/core — block taxonomy, page model, D1 schema types, and validation (SSOT). */
 
 export * from "./blocks";
