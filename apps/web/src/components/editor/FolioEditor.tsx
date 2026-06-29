@@ -705,6 +705,83 @@ function BlockEditor({
           <option value="lg">넓게</option>
         </Select>
       ) : null}
+
+      {block.type === "email" ? (
+        <div className="flex flex-col gap-2">
+          <Input
+            type="email"
+            value={String(d.email ?? "")}
+            onChange={(e) => onUpdateData(block.id, { email: e.target.value })}
+            placeholder="you@example.com"
+          />
+          <Input
+            value={String(d.title ?? "")}
+            onChange={(e) => onUpdateData(block.id, { title: e.target.value })}
+            placeholder="버튼 제목 (예: 이메일 보내기)"
+          />
+          <Textarea
+            value={String(d.description ?? "")}
+            onChange={(e) => onUpdateData(block.id, { description: e.target.value })}
+            placeholder="설명 (선택)"
+          />
+        </div>
+      ) : null}
+
+      {block.type === "phone" ? (
+        <div className="flex flex-col gap-2">
+          <Input
+            type="tel"
+            value={String(d.phone ?? "")}
+            onChange={(e) => onUpdateData(block.id, { phone: e.target.value })}
+            placeholder="+82 10 1234 5678"
+          />
+          <Input
+            value={String(d.title ?? "")}
+            onChange={(e) => onUpdateData(block.id, { title: e.target.value })}
+            placeholder="버튼 제목 (예: 전화하기)"
+          />
+          <Textarea
+            value={String(d.description ?? "")}
+            onChange={(e) => onUpdateData(block.id, { description: e.target.value })}
+            placeholder="설명 (선택)"
+          />
+        </div>
+      ) : null}
+
+      {block.type === "image" ? (
+        <div className="flex flex-col gap-2">
+          <Input
+            value={String(d.url ?? "")}
+            onChange={(e) => onUpdateData(block.id, { url: e.target.value })}
+            placeholder="https://… 이미지 URL"
+          />
+          <Input
+            value={String(d.alt ?? "")}
+            onChange={(e) => onUpdateData(block.id, { alt: e.target.value })}
+            placeholder="대체 텍스트 (접근성)"
+          />
+          <Input
+            value={String(d.href ?? "")}
+            onChange={(e) => onUpdateData(block.id, { href: e.target.value })}
+            placeholder="클릭 시 이동할 링크 (선택)"
+          />
+        </div>
+      ) : null}
+
+      {block.type === "youtube" ? (
+        <div className="flex flex-col gap-2">
+          <Input
+            value={String(d.video_id ?? "")}
+            onChange={(e) => onUpdateData(block.id, { video_id: e.target.value })}
+            placeholder="YouTube 링크 또는 영상 ID"
+          />
+          <Input
+            value={String(d.title ?? "")}
+            onChange={(e) => onUpdateData(block.id, { title: e.target.value })}
+            placeholder="캡션 (선택)"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -7,6 +7,10 @@ export const BLOCK_TYPE_OPTIONS: Array<{ value: BlockType; label: string }> = [
   { value: "heading", label: "헤딩" },
   { value: "text", label: "텍스트" },
   { value: "divider", label: "구분선" },
+  { value: "email", label: "이메일" },
+  { value: "phone", label: "전화" },
+  { value: "image", label: "이미지" },
+  { value: "youtube", label: "YouTube" },
 ];
 
 /** All brands, sorted by label, for the social/link brand pickers. */
@@ -44,6 +48,14 @@ export function createDraftBlock(type: BlockType): EditorBlock {
       return { ...base, data: { text: "" } };
     case "text":
       return { ...base, data: { text: "" } };
+    case "email":
+      return { ...base, data: { email: "", title: "", description: "" } };
+    case "phone":
+      return { ...base, data: { phone: "", title: "", description: "" } };
+    case "image":
+      return { ...base, data: { url: "https://", alt: "", href: "" } };
+    case "youtube":
+      return { ...base, data: { video_id: "", title: "" } };
     default:
       return { ...base, data: { size: "md" } };
   }

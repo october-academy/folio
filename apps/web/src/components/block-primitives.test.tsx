@@ -2,7 +2,7 @@
 import { describe, expect, test } from "bun:test";
 import { BrandButton } from "@folio/buttons";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DividerBlock, HeadingBlock, TextBlock } from "./block-primitives";
+import { DividerBlock, HeadingBlock, TextBlock, YouTubeBlock } from "./block-primitives";
 
 describe("block primitives render", () => {
   test("heading renders its text inside an h2", () => {
@@ -19,6 +19,16 @@ describe("block primitives render", () => {
   test("divider applies the size gap", () => {
     expect(renderToStaticMarkup(<DividerBlock data={{ size: "lg" }} />)).toContain("py-4");
     expect(renderToStaticMarkup(<DividerBlock data={{}} />)).toContain("py-2");
+  });
+
+  test("youtube embeds the nocookie player and an optional caption", () => {
+    const html = renderToStaticMarkup(
+      <YouTubeBlock data={{ video_id: "dQw4w9WgXcQ", title: "My talk" }} />,
+    );
+    expect(html).toContain("youtube-nocookie.com/embed/dQw4w9WgXcQ");
+    expect(html).toContain("My talk");
+    // No naked youtube.com (privacy: only the nocookie host).
+    expect(html).not.toContain("//www.youtube.com");
   });
 });
 

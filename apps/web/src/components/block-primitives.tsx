@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: MIT
-import type { DividerBlockData, HeadingBlockData, TextBlockData } from "@folio/core";
+import type {
+  DividerBlockData,
+  HeadingBlockData,
+  TextBlockData,
+  YouTubeBlockData,
+} from "@folio/core";
 
 /** Static (server-renderable) block renderers — no client/tracking deps. */
 
@@ -29,5 +34,32 @@ export function DividerBlock({ data }: { data: DividerBlockData }) {
       <div className="h-2 w-2 rotate-45 border-[3px] border-foreground bg-accent" />
       <div className="h-[3px] flex-1 bg-foreground/30" />
     </div>
+  );
+}
+
+/**
+ * Privacy-friendly YouTube embed (youtube-nocookie). No tracking — the iframe is
+ * inert until the visitor presses play, and YouTube's own cookies are deferred.
+ */
+export function YouTubeBlock({ data }: { data: YouTubeBlockData }) {
+  return (
+    <figure className="overflow-hidden border-[3px] border-foreground bg-background shadow-brutal-sm">
+      <div className="aspect-video w-full">
+        <iframe
+          className="h-full w-full"
+          src={`https://www.youtube-nocookie.com/embed/${data.video_id}`}
+          title={data.title || "YouTube video"}
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      </div>
+      {data.title ? (
+        <figcaption className="border-t-[3px] border-foreground px-3 py-2 text-sm font-bold text-foreground">
+          {data.title}
+        </figcaption>
+      ) : null}
+    </figure>
   );
 }

@@ -7,9 +7,24 @@
  * v0.2 will add email/phone/vcard/youtube/qr/image (SPEC §6).
  */
 import { z } from "zod";
-import { normalizeUrl, sanitizeText } from "./validation";
+import {
+  extractYouTubeId,
+  normalizeEmail,
+  normalizePhone,
+  normalizeUrl,
+  sanitizeText,
+} from "./validation";
 
-export const BLOCK_TYPES = ["link", "heading", "text", "divider"] as const;
+export const BLOCK_TYPES = [
+  "link",
+  "heading",
+  "text",
+  "divider",
+  "email",
+  "phone",
+  "image",
+  "youtube",
+] as const;
 export type BlockType = (typeof BLOCK_TYPES)[number];
 export const BLOCK_TYPE_SET: ReadonlySet<string> = new Set(BLOCK_TYPES);
 
@@ -36,8 +51,20 @@ export type LinkBlockData = {
 export type HeadingBlockData = { text: string };
 export type TextBlockData = { text: string };
 export type DividerBlockData = { size?: "sm" | "md" | "lg" };
+export type EmailBlockData = { email: string; title: string; description?: string };
+export type PhoneBlockData = { phone: string; title: string; description?: string };
+export type ImageBlockData = { url: string; alt: string; href?: string };
+export type YouTubeBlockData = { video_id: string; title?: string };
 
-export type BlockData = LinkBlockData | HeadingBlockData | TextBlockData | DividerBlockData;
+export type BlockData =
+  | LinkBlockData
+  | HeadingBlockData
+  | TextBlockData
+  | DividerBlockData
+  | EmailBlockData
+  | PhoneBlockData
+  | ImageBlockData
+  | YouTubeBlockData;
 
 // --- zod schemas (structural; for MCP/external validation & type inference) --
 
@@ -56,6 +83,25 @@ export const headingDataSchema = z.object({ text: z.string() });
 export const textDataSchema = z.object({ text: z.string() });
 export const dividerDataSchema = z.object({
   size: z.enum(["sm", "md", "lg"]).optional(),
+});
+export const emailDataSchema = z.object({
+  email: z.string(),
+  title: z.string(),
+  description: z.string().optional(),
+});
+export const phoneDataSchema = z.object({
+  phone: z.string(),
+  title: z.string(),
+  description: z.string().optional(),
+});
+export const imageDataSchema = z.object({
+  url: z.string(),
+  alt: z.string(),
+  href: z.string().optional(),
+});
+export const youtubeDataSchema = z.object({
+  video_id: z.string(),
+  title: z.string().optional(),
 });
 
 // --- Runtime normalization (the path API routes use) ------------------------
@@ -102,6 +148,61 @@ export function normalizeBlockData(
     const text = sanitizeText(source.text, "", 600);
     if (!text) return { error: "텍스트 블록 내용이 필요합니다" };
     return { type: blockType, data: { text } };
+  }
+
+  if (blockType === "email") {
+    const email = normalizeEmail(source.email);
+    if (!email) return { error: "올바른 이메일 주소가 필요합니다" };
+    const description = sanitizeText(source.description, "", 200) || undefined;
+    return {
+      type: blockType,
+      data: {
+        email,
+        title: sanitizeText(source.title, "이메일", 100),
+        ...(description ? { description } : {}),
+      },
+    };
+  }
+
+  if (blockType === "phone") {
+    const phone = normalizePhone(source.phone);
+    if (!phone) return { error: "올바른 전화번호가 필요합니다" };
+    const description = sanitizeText(source.description, "", 200) || undefined;
+    return {
+      type: blockType,
+      data: {
+        phone,
+        title: sanitizeText(source.title, "전화", 100),
+        ...(description ? { description } : {}),
+      },
+    };
+  }
+
+  if (blockType === "image") {
+    const url = normalizeUrl(source.url, { allowHttpLocal: opts.allowHttpLocal });
+    if (!url) return { error: "https:// 이미지 URL이 필요합니다" };
+    const href =
+      typeof source.href === "string"
+        ? (normalizeUrl(source.href, { allowHttpLocal: opts.allowHttpLocal }) ?? undefined)
+        : undefined;
+    return {
+      type: blockType,
+      data: {
+        url,
+        alt: sanitizeText(source.alt, "", 200),
+        ...(href ? { href } : {}),
+      },
+    };
+  }
+
+  if (blockType === "youtube") {
+    const videoId = extractYouTubeId(source.video_id ?? source.url);
+    if (!videoId) return { error: "올바른 YouTube 링크 또는 영상 ID가 필요합니다" };
+    const title = sanitizeText(source.title, "", 120) || undefined;
+    return {
+      type: blockType,
+      data: { video_id: videoId, ...(title ? { title } : {}) },
+    };
   }
 
   // link

@@ -51,6 +51,71 @@ export function hostnameOf(value: string): string | null {
   }
 }
 
+// Pragmatic email shape: local@domain.tld, no spaces, single @.
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Normalize an email address (trim + lowercase), or null if malformed. */
+export function normalizeEmail(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value
+    .trim()
+    .replace(/^mailto:/i, "")
+    .toLowerCase();
+  return EMAIL_PATTERN.test(trimmed) ? trimmed.slice(0, 254) : null;
+}
+
+/**
+ * Normalize a phone number to a `tel:`-safe string: keep digits, a leading `+`,
+ * and common separators. Returns null if it has no digits.
+ */
+export function normalizePhone(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const raw = value.trim().replace(/^tel:/i, "");
+  const cleaned = raw
+    .replace(/[^\d+()\-.\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const digits = cleaned.replace(/\D/g, "");
+  if (digits.length < 4 || digits.length > 20) return null;
+  // Allow only a single leading +.
+  const plus = cleaned.startsWith("+") ? "+" : "";
+  return (plus + cleaned.replace(/\+/g, "")).slice(0, 32);
+}
+
+/** The `tel:` href form of a phone number (digits + leading +, no separators). */
+export function telHref(phone: string): string {
+  const digits = phone.replace(/[^\d]/g, "");
+  return `tel:${phone.startsWith("+") ? "+" : ""}${digits}`;
+}
+
+/**
+ * Extract a YouTube video id from a watch/share/embed URL or a bare id.
+ * Accepts youtube.com/watch?v=, youtu.be/, /embed/, /shorts/. Ids are 11 chars
+ * of `[A-Za-z0-9_-]`. Returns null if none found.
+ */
+export function extractYouTubeId(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const input = value.trim();
+  if (/^[A-Za-z0-9_-]{11}$/.test(input)) return input;
+  try {
+    const url = new URL(input);
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
+    if (host === "youtu.be") {
+      const id = url.pathname.slice(1, 12);
+      return /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+    }
+    if (host === "youtube.com" || host === "m.youtube.com" || host === "youtube-nocookie.com") {
+      const v = url.searchParams.get("v");
+      if (v && /^[A-Za-z0-9_-]{11}$/.test(v)) return v;
+      const m = url.pathname.match(/\/(?:embed|shorts|v)\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[1] ?? null;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 /** Turn an arbitrary string into a slug candidate (3–30 chars, a–z 0–9 -). */
 export function slugify(source: string): string {
   const normalized = source

@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 import { getBrand } from "@folio/buttons";
-import { Link2 } from "lucide-react";
+import { extractYouTubeId } from "@folio/core";
+import { Link2, Mail, Phone, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { EditorBlock, SocialDraft } from "./editor-helpers";
 
@@ -42,6 +43,45 @@ function PreviewBlock({ block }: { block: EditorBlock }) {
         <div className="h-[3px] flex-1 bg-foreground/30" />
         <div className="h-2 w-2 rotate-45 border-[3px] border-foreground bg-accent" />
         <div className="h-[3px] flex-1 bg-foreground/30" />
+      </div>
+    );
+  }
+  if (block.type === "email" || block.type === "phone") {
+    const isEmail = block.type === "email";
+    const label = String(d.title || (isEmail ? d.email : d.phone) || (isEmail ? "이메일" : "전화"));
+    return (
+      <div className="flex items-center gap-2 border-[3px] border-foreground bg-background p-2.5 text-xs font-black shadow-brutal-sm">
+        <span className="inline-flex h-7 w-7 items-center justify-center border-[3px] border-foreground bg-secondary">
+          {isEmail ? <Mail className="h-3.5 w-3.5" /> : <Phone className="h-3.5 w-3.5" />}
+        </span>
+        <span className="truncate">{label}</span>
+      </div>
+    );
+  }
+  if (block.type === "image") {
+    const url = String(d.url ?? "");
+    return url && url !== "https://" ? (
+      <img
+        src={url}
+        alt={String(d.alt ?? "")}
+        className="block w-full border-[3px] border-foreground shadow-brutal-sm"
+      />
+    ) : (
+      <div className="border-[3px] border-dashed border-foreground bg-background px-3 py-6 text-center text-xs text-muted-foreground">
+        이미지 URL을 입력하세요
+      </div>
+    );
+  }
+  if (block.type === "youtube") {
+    const id = extractYouTubeId(String(d.video_id ?? ""));
+    return (
+      <div className="flex items-center gap-2 border-[3px] border-foreground bg-background p-2.5 text-xs font-black shadow-brutal-sm">
+        <span className="inline-flex h-7 w-7 items-center justify-center border-[3px] border-foreground bg-accent text-accent-foreground">
+          <Play className="h-3.5 w-3.5" />
+        </span>
+        <span className="truncate">
+          {String(d.title || (id ? "YouTube 영상" : "YouTube 링크 입력"))}
+        </span>
       </div>
     );
   }
