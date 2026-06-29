@@ -21,6 +21,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Input, Select, Textarea } from "@/components/ui";
 import type { AlmanacStats } from "@/lib/almanac-util";
 import { cn } from "@/lib/utils";
+import { AnalyticsPanel } from "./AnalyticsPanel";
 import {
   BLOCK_TYPE_OPTIONS,
   BRAND_OPTIONS,
@@ -59,6 +60,7 @@ export function FolioEditor() {
   const [copied, setCopied] = useState(false);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [almanacStats, setAlmanacStats] = useState<Record<string, AlmanacStats>>({});
+  const [almanacEnabled, setAlmanacEnabled] = useState<boolean | null>(null);
   const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -134,9 +136,10 @@ export function FolioEditor() {
       authFetch("/api/folio/stats")
         .then((r) => (r.ok ? r.json() : null))
         .then((d: { enabled?: boolean; stats?: Record<string, AlmanacStats> } | null) => {
+          setAlmanacEnabled(d?.enabled ?? false);
           if (d?.enabled) setAlmanacStats(d.stats ?? {});
         })
-        .catch(() => {});
+        .catch(() => setAlmanacEnabled(false));
     } catch (e) {
       setError(e instanceof Error ? e.message : "오류가 발생했습니다.");
     } finally {
@@ -414,6 +417,8 @@ export function FolioEditor() {
       ) : (
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="flex flex-col gap-6">
+            <AnalyticsPanel blocks={blocks} stats={almanacStats} enabled={almanacEnabled} />
+
             {/* Profile */}
             <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal-sm">
               <div className="mb-4 flex items-center justify-between">

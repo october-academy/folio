@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 import { BRAND_KEYS, BRANDS } from "@folio/buttons";
 import type { BlockType } from "@folio/core";
+import type { AlmanacStats } from "@/lib/almanac-util";
 
 /** Theme presets surfaced in the editor (value must be in @folio/core THEMES). */
 export const THEME_OPTIONS: Array<{ value: string; label: string }> = [
@@ -95,4 +96,46 @@ export function reorderBlocks(blocks: EditorBlock[], fromId: string, toId: strin
 
 export function blockTypeLabel(type: BlockType): string {
   return BLOCK_TYPE_OPTIONS.find((o) => o.value === type)?.label ?? type;
+}
+
+// --- Almanac analytics aggregation (pure) -----------------------------------
+
+export type LinkStatRow = { id: string; title: string; stats: AlmanacStats };
+export type StatsSummary = {
+  totals: { clicks: number; signups: number; conversions: number; revenue: number };
+  rows: LinkStatRow[];
+  trackedLinks: number;
+};
+
+/**
+ * Aggregate per-link Almanac stats across the editor's link blocks into totals
+ * plus a table ranked by revenue → conversions → clicks. Pure + testable.
+ */
+export function summarizeStats(
+  blocks: EditorBlock[],
+  stats: Record<string, AlmanacStats>,
+): StatsSummary {
+  const rows: LinkStatRow[] = [];
+  const totals = { clicks: 0, signups: 0, conversions: 0, revenue: 0 };
+
+  for (const b of blocks) {
+    if (b.type !== "link") continue;
+    const stat = stats[b.id];
+    if (!stat) continue;
+    const title = String(b.data.title || b.data.url || "링크");
+    rows.push({ id: b.id, title, stats: stat });
+    totals.clicks += stat.clicks;
+    totals.signups += stat.signups;
+    totals.conversions += stat.conversions;
+    totals.revenue += stat.revenue;
+  }
+
+  rows.sort(
+    (a, b) =>
+      b.stats.revenue - a.stats.revenue ||
+      b.stats.conversions - a.stats.conversions ||
+      b.stats.clicks - a.stats.clicks,
+  );
+
+  return { totals, rows, trackedLinks: rows.length };
 }

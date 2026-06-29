@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: MIT
 import { describe, expect, test } from "bun:test";
 import { BLOCK_TYPES, THEMES } from "@folio/core";
-import { BLOCK_TYPE_OPTIONS, createDraftBlock, THEME_OPTIONS } from "./editor-helpers";
+import type { AlmanacStats } from "@/lib/almanac-util";
+import {
+  BLOCK_TYPE_OPTIONS,
+  createDraftBlock,
+  type EditorBlock,
+  summarizeStats,
+  THEME_OPTIONS,
+} from "./editor-helpers";
 
 describe("editor option ↔ core SSOT sync", () => {
   test("every block type has exactly one editor option", () => {
@@ -24,5 +31,46 @@ describe("editor option ↔ core SSOT sync", () => {
       expect(draft.isDraft).toBe(true);
       expect(draft.id.startsWith("draft-")).toBe(true);
     }
+  });
+});
+
+describe("summarizeStats", () => {
+  const stat = (o: Partial<AlmanacStats>): AlmanacStats => ({
+    clicks: 0,
+    signups: 0,
+    conversions: 0,
+    revenue: 0,
+    first_revenue_at: null,
+    ...o,
+  });
+  const link = (id: string, title: string): EditorBlock => ({
+    id,
+    type: "link",
+    position: 0,
+    is_visible: true,
+    data: { title, url: "https://x.com" },
+  });
+
+  test("aggregates only link blocks and ranks by revenue", () => {
+    const blocks: EditorBlock[] = [
+      link("a", "A"),
+      link("b", "B"),
+      { id: "h", type: "heading", position: 1, is_visible: true, data: { text: "x" } },
+    ];
+    const stats = {
+      a: stat({ clicks: 10, conversions: 1, revenue: 5 }),
+      b: stat({ clicks: 4, conversions: 3, revenue: 99 }),
+      // heading + untracked link contribute nothing
+    };
+    const s = summarizeStats(blocks, stats);
+    expect(s.trackedLinks).toBe(2);
+    expect(s.totals).toEqual({ clicks: 14, signups: 0, conversions: 4, revenue: 104 });
+    expect(s.rows.map((r) => r.id)).toEqual(["b", "a"]); // b ranks first (higher revenue)
+  });
+
+  test("empty when no link has stats", () => {
+    const s = summarizeStats([link("a", "A")], {});
+    expect(s.trackedLinks).toBe(0);
+    expect(s.totals.clicks).toBe(0);
   });
 });
