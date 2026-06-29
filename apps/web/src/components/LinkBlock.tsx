@@ -3,7 +3,7 @@
 
 import { BrandButton, getBrand } from "@folio/buttons";
 import { hostnameOf, type LinkBlockData } from "@folio/core";
-import { Link2 } from "lucide-react";
+import { faviconProxyUrl } from "@/lib/favicon-util";
 import { capture } from "@/lib/posthog-client";
 import { cn } from "@/lib/utils";
 
@@ -53,11 +53,14 @@ export function LinkBlock({ id, slug, data }: { id: string; slug: string; data: 
     >
       <span className="flex min-w-0 items-center gap-3">
         <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center border-[3px] border-foreground bg-secondary text-foreground shadow-brutal-sm">
-          {favicon_url ? (
-            <img src={favicon_url} alt="" width={18} height={18} className="h-[18px] w-[18px]" />
-          ) : (
-            <Link2 className="h-4 w-4" aria-hidden="true" />
-          )}
+          <img
+            src={favicon_url ?? faviconProxyUrl(url)}
+            alt=""
+            width={18}
+            height={18}
+            loading="lazy"
+            className="h-[18px] w-[18px]"
+          />
         </span>
         <span className="min-w-0">
           <span className="block truncate text-base font-black sm:text-lg">{title || "링크"}</span>

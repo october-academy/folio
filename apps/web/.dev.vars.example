@@ -16,6 +16,11 @@ NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
 # --- Public site URL (OG image + canonical links) ---
 NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 
+# --- Favicon fetch (v0.2) ---
+# Non-brand link hosts get a self-hosted, KV-cached favicon (fetched server-side).
+# Set to "off" to disable third-party favicon fetching entirely.
+FOLIO_FAVICON="on"
+
 # --- Almanac integration (OPTIONAL — full click→signup→revenue attribution) ---
 # v0.2. When both are set, each link block is registered as an Almanac short link
 # carrying a click_id, joining clicks to Almanac's click→signup→revenue ledger.

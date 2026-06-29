@@ -82,6 +82,10 @@ folio/  (Turborepo + bun)
 - **Storage:** Cloudflare **D1** (`pages`, `blocks`) + **KV** (rendered public-page cache, invalidated on edit).
 - **Auth (v0.1):** single-tenant — one Folio per deploy; editor gated by `FOLIO_ADMIN_TOKEN`.
 - **Analytics:** PostHog events (standalone) or Almanac short links (full attribution, v0.2).
+- **Blocks:** `link`, `heading`, `text`, `divider`, `email`, `phone`, `image`, `youtube` (nocookie
+  embed), `vcard` (downloadable `.vcf`), `qr` (SSR SVG) — all with live preview.
+- **Favicon (v0.2):** links to non-brand hosts get a self-hosted, KV-cached favicon — Folio fetches
+  it server-side so visitors never contact a third party. Disable with `FOLIO_FAVICON=off`.
 
 ## License
 

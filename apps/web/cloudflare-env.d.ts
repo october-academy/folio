@@ -20,6 +20,9 @@ declare global {
     NEXT_PUBLIC_POSTHOG_HOST?: string;
     NEXT_PUBLIC_SITE_URL?: string;
 
+    /** Set to "off" to disable third-party favicon fetching (privacy). */
+    FOLIO_FAVICON?: string;
+
     /** Almanac integration (optional, v0.2). */
     ALMANAC_URL?: string;
     ALMANAC_API_KEY?: string;

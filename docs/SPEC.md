@@ -116,7 +116,7 @@ Dropped from the Agentic30 original: `landing_card` and the gamification toggles
 
 - SSR at `/@slug` (and `/[slug]`), cached in KV, fast TTFB on Cloudflare. CSS-variable theme (auto/light/dark) from LittleLink pattern.
 - Per-page OG image generated at the edge (`/api/og/[slug]` via `@vercel/og`/Satori) — reuse the existing Agentic30 implementation.
-- Favicon fetch for custom links: Google/DuckDuckGo favicon service → cache in KV/R2 → fallback default icon (clean-room of LinkStack's mechanism; note third-party/privacy).
+- Favicon fetch for custom links (v0.2): a link block whose host has no LittleLink brand renders `<img src="/api/favicon?u=…">`. That route fetches the icon from the Google s2 favicon service **server-side**, caches the bytes in KV (30-day TTL; 1-hour negative cache), and self-serves them — so a public-page visitor's browser only ever contacts Folio, never the upstream. Any miss/failure redirects to the bundled generic icon. Disable third-party fetch with `FOLIO_FAVICON=off`. Clean-room of LinkStack's fetch-and-cache mechanism (no code copied).
 - `BioPageTracker` fires a PostHog `folio_page_view` (or an Almanac `bio_page_view` when Almanac is on).
 
 ## 9. Editor
