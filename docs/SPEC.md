@@ -132,8 +132,8 @@ Dropped from the Agentic30 original: `landing_card` and the gamification toggles
 
 ## 10. Auth / ownership
 
-- **v0.1 = single-tenant:** one Folio per deploy; the editor is gated by an admin token (env `FOLIO_ADMIN_TOKEN`) or Cloudflare Access. No Supabase, no user table. `owner_id` is a constant. (Mirrors LinkStack "single-user mode" — the common indie self-host case.)
-- **v0.2 = multi-user:** `users` table + email magic-link (Resend/any SMTP) or Cloudflare Access; per-user `/@handle`; optional open registration.
+- **Token mode (default, single-tenant):** one Folio per deploy; the editor is gated by an admin token (env `FOLIO_ADMIN_TOKEN`). No `users` table touched; `owner_id` is the constant `FOLIO_OWNER_ID`. (Mirrors LinkStack "single-user mode" — the common indie self-host case.)
+- **Access mode (v1.0, multi-user):** set `FOLIO_AUTH_MODE=access` and put the Worker behind **Cloudflare Access**. Folio reads the `Cf-Access-Authenticated-User-Email` identity header, upserts a `users` row on first sign-in (first user → `admin`), and sets `owner_id = users.id` — so each user owns their own page at their own `/@slug`. No email/SMTP dependency (honors "Cloudflare + PostHog only"); the editor auto-detects the mode (no token gate behind Access). Email magic-link (Resend/any SMTP) remains a future option.
 
 ## 11. Analytics (the moat)
 

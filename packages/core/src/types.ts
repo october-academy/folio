@@ -22,6 +22,23 @@ export type FolioPageRow = {
   updated_at: number | null;
 };
 
+/** A user (v1.0 multi-user). Owns one Folio page via `owner_id = user.id`. */
+export type FolioUserRole = "admin" | "user";
+
+export type FolioUserRow = {
+  id: string;
+  email: string;
+  role: string;
+  created_at: number | null;
+};
+
+export type FolioUser = {
+  id: string;
+  email: string;
+  role: FolioUserRole;
+  created_at: number | null;
+};
+
 /** A row in the D1 `blocks` table. */
 export type FolioBlockRow = {
   id: string;

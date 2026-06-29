@@ -41,6 +41,8 @@ export function FolioEditor() {
   const [token, setToken] = useState<string | null>(null);
   const [tokenInput, setTokenInput] = useState("");
   const [authError, setAuthError] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authEmail, setAuthEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [busyBlockId, setBusyBlockId] = useState<string | null>(null);
@@ -82,16 +84,15 @@ export function FolioEditor() {
   );
 
   const load = useCallback(async () => {
-    if (!token) return;
     setLoading(true);
     setError(null);
-    setAuthError(false);
     try {
       const res = await authFetch("/api/folio");
       if (res.status === 401) {
         setAuthError(true);
         return;
       }
+      setAuthError(false);
       if (!res.ok) throw new Error("불러오기에 실패했습니다.");
       const data = (await res.json()) as {
         page: {
@@ -111,7 +112,9 @@ export function FolioEditor() {
           data: Record<string, unknown>;
         }>;
         public_url: string;
+        auth?: { role: string; email: string | null };
       };
+      setAuthEmail(data.auth?.email ?? null);
       setSlug(data.page.slug);
       setSlugDraft(data.page.slug);
       setDisplayName(data.page.display_name ?? "");
@@ -144,12 +147,16 @@ export function FolioEditor() {
       setError(e instanceof Error ? e.message : "오류가 발생했습니다.");
     } finally {
       setLoading(false);
+      setAuthChecked(true);
     }
-  }, [token, authFetch]);
+  }, [authFetch]);
 
+  // Attempt a load once mounted (and again whenever the token changes). In
+  // Cloudflare Access mode the first load succeeds with no token; in token mode
+  // a missing/invalid token yields a 401 → the token gate.
   useEffect(() => {
-    if (token) void load();
-  }, [token, load]);
+    if (ready) void load();
+  }, [ready, load]);
 
   function saveTokenValue() {
     const t = tokenInput.trim();
@@ -352,7 +359,15 @@ export function FolioEditor() {
 
   if (!ready) return null;
 
-  if (!token || authError) {
+  if (!authChecked) {
+    return (
+      <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-4 text-sm font-bold text-muted-foreground">
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 인증 확인 중...
+      </div>
+    );
+  }
+
+  if (authError) {
     return (
       <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-4">
         <div className="w-full border-[4px] border-foreground bg-background p-6 shadow-brutal">
@@ -394,9 +409,16 @@ export function FolioEditor() {
             {publicUrl || `/@${slug}`}
           </button>
         </div>
-        <Button variant="outline" onClick={signOut}>
-          로그아웃
-        </Button>
+        <div className="flex items-center gap-3">
+          {authEmail ? (
+            <span className="hidden text-sm font-bold text-muted-foreground sm:inline">
+              {authEmail}
+            </span>
+          ) : null}
+          <Button variant="outline" onClick={signOut}>
+            로그아웃
+          </Button>
+        </div>
       </div>
 
       {error ? (

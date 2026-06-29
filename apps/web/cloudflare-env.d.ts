@@ -11,10 +11,12 @@ declare global {
     /** Static assets (OpenNext). */
     ASSETS: Fetcher;
 
-    /** Editor admin token (single-tenant v0.1). */
+    /** Editor admin token (single-tenant token mode). */
     FOLIO_ADMIN_TOKEN: string;
-    /** Opaque owner id for the single Folio on this deploy. */
+    /** Opaque owner id for the single Folio on this deploy (token mode). */
     FOLIO_OWNER_ID?: string;
+    /** Auth mode: "token" (single-tenant, default) or "access" (Cloudflare Access multi-user). */
+    FOLIO_AUTH_MODE?: string;
 
     NEXT_PUBLIC_POSTHOG_KEY?: string;
     NEXT_PUBLIC_POSTHOG_HOST?: string;

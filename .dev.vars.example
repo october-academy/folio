@@ -2,11 +2,15 @@
 # Copy to apps/web/.dev.vars (git-ignored) and fill in. Cloudflare reads .dev.vars
 # during `wrangler dev`; Next dev reads .dev.vars via OpenNext's getCloudflareContext.
 
-# --- Editor auth (single-tenant, v0.1) ---
-# The editor at /admin is gated by this token. Use a long random string.
+# --- Editor auth ---
+# Auth mode: "token" (single-tenant, default) or "access" (Cloudflare Access multi-user).
+FOLIO_AUTH_MODE="token"
+# token mode: the editor at /admin is gated by this token. Use a long random string.
 FOLIO_ADMIN_TOKEN="change-me-to-a-long-random-string"
-# Opaque owner id for the single Folio page on this deploy.
+# token mode: opaque owner id for the single Folio page on this deploy.
 FOLIO_OWNER_ID="owner"
+# access mode: put the Worker behind Cloudflare Access; Folio trusts the
+# Cf-Access-Authenticated-User-Email header and gives each user their own page.
 
 # --- PostHog (standalone analytics path) ---
 # Standalone Folio fires folio_page_view / folio_link_click to PostHog.

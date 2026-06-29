@@ -13,5 +13,6 @@ export async function GET(request: Request) {
     page: ctx.page,
     blocks,
     public_url: `${getSiteUrl()}/@${ctx.page.slug}`,
+    auth: { role: ctx.owner.role, email: ctx.owner.email ?? null },
   });
 }

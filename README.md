@@ -81,7 +81,9 @@ folio/  (Turborepo + bun)
 ```
 
 - **Storage:** Cloudflare **D1** (`pages`, `blocks`) + **KV** (rendered public-page cache, invalidated on edit).
-- **Auth (v0.1):** single-tenant — one Folio per deploy; editor gated by `FOLIO_ADMIN_TOKEN`.
+- **Auth:** single-tenant by default (one Folio per deploy, editor gated by `FOLIO_ADMIN_TOKEN`).
+  Set `FOLIO_AUTH_MODE=access` + put the Worker behind **Cloudflare Access** for multi-user — each
+  signed-in email gets their own page at their own `/@slug` (no email/SMTP infra needed).
 - **Analytics:** PostHog events (standalone) or Almanac short links (full attribution, v0.2).
 - **Blocks:** `link`, `heading`, `text`, `divider`, `email`, `phone`, `image`, `youtube` (nocookie
   embed), `vcard` (downloadable `.vcf`), `qr` (SSR SVG) — all with live preview.
