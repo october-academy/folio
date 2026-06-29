@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
   // Register the link as an Almanac short link (no-op when Almanac is off).
   if (block.type === "link") {
-    const withCode = await ensureAlmanacCode(block.id, block.data as LinkBlockData);
+    const withCode = await ensureAlmanacCode(block.id, block.data as LinkBlockData, ctx.page.slug);
     if (withCode.almanac_code) {
       await updateBlock({
         id: block.id,

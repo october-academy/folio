@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 import type { LinkBlockData } from "@folio/core";
-import { almanacEnabled, getLinkStats } from "@/lib/almanac";
+import { almanacEnabled, getLinkStatsMap } from "@/lib/almanac";
 import type { AlmanacStats } from "@/lib/almanac-util";
 import { listBlocks } from "@/lib/db";
 import { withEditorPage } from "@/lib/editor-api";
@@ -8,8 +8,9 @@ import { withEditorPage } from "@/lib/editor-api";
 /**
  * GET /api/folio/stats — per-link Almanac attribution stats for the editor.
  * Returns `{ enabled, stats: { [blockId]: AlmanacStats } }`. When Almanac is off
- * (or every lookup fails) it returns `enabled:false` / an empty map — the editor
- * simply shows no conversion badges.
+ * (or the lookup fails) it returns `enabled:false` / an empty map — the editor
+ * simply shows no conversion badges. One batched `/api/links` call covers every
+ * link (keyed by short code), then we map each back to its block id.
  */
 export async function GET(request: Request) {
   const ctx = await withEditorPage(request);
@@ -17,17 +18,15 @@ export async function GET(request: Request) {
 
   if (!almanacEnabled()) return Response.json({ enabled: false, stats: {} });
 
-  const blocks = await listBlocks(ctx.page.id);
-  const coded = blocks.flatMap((b) => {
-    const code = b.type === "link" ? (b.data as LinkBlockData).almanac_code : undefined;
-    return code ? [{ id: b.id, code }] : [];
-  });
-
-  const entries = await Promise.all(
-    coded.map(async ({ id, code }) => [id, await getLinkStats(code)] as const),
-  );
+  const [blocks, statsByCode] = await Promise.all([listBlocks(ctx.page.id), getLinkStatsMap()]);
 
   const stats: Record<string, AlmanacStats> = {};
-  for (const [id, s] of entries) if (s) stats[id] = s;
+  for (const b of blocks) {
+    if (b.type !== "link") continue;
+    const code = (b.data as LinkBlockData).almanac_code;
+    if (!code) continue;
+    const s = statsByCode.get(code);
+    if (s) stats[b.id] = s;
+  }
   return Response.json({ enabled: true, stats });
 }

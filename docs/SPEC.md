@@ -49,10 +49,10 @@ Folio works two ways:
 
 The link block stores both the destination URL and (when Almanac is on) the Almanac short code, so the page can render the short link and the editor shows per-link conversion, not just clicks.
 
-**v0.2 implementation (the integration seam).** Env-gated on `ALMANAC_URL` + `ALMANAC_API_KEY`; every call is wrapped so a failure degrades to the standalone PostHog path (never breaks an edit or a render). The contract Folio integrates against (`apps/web/src/lib/almanac.ts`, defensive parsing in `almanac-util.ts`):
-- **Register:** `POST {ALMANAC_URL}/api/links` `Authorization: Bearer {key}` body `{ destination, label?, source:"folio", source_id }` → `{ code, short_url?, click_id? }`. Called on first save of a link block; `code` is persisted as `almanac_code`.
-- **Public render:** the page builder fills `almanac_url = {ALMANAC_URL}/l/{code}` (render-time, not persisted) and the link's href points there, so clicks flow through Almanac's redirect into its ledger.
-- **Stats:** `GET {ALMANAC_URL}/api/links/{code}/stats` → `{ clicks, signups, conversions, revenue, first_revenue_at }`. Surfaced per-link in the editor via `GET /api/folio/stats`.
+**Implementation (the integration seam) — aligned to Almanac's real edge API** (`github.com/october-academy/almanac` `apps/edge`). Env-gated on `ALMANAC_URL` + `ALMANAC_API_KEY`; auth via `x-api-key`; every call is wrapped so a failure degrades to the standalone PostHog path (never breaks an edit or a render). See `apps/web/src/lib/almanac.ts` (HTTP) + `almanac-util.ts` (pure, tested):
+- **Register:** Folio **mints** a deterministic short code from the block id (`mintShortCode`, satisfies Almanac's `^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$`) and calls `POST {ALMANAC_URL}/api/links` body `{ shortCode, targetUrl, ogTitle, channel:"folio", campaign:<slug> }` → `{ shortUrl, shortCode }`. `shortCode` is persisted as `almanac_code`; a `409` (already exists) is treated as success (idempotent retry).
+- **Public render:** the page builder fills `almanac_url = {ALMANAC_URL}/{code}` (render-time, not persisted) and the link's href points there → Almanac's `GET /{code}` redirect mints/forwards a `click_id` and records the click in its D1 ledger.
+- **Stats:** one batched `GET {ALMANAC_URL}/api/links?range=90d` returns every link with `{ short_code, total_clicks, signups, conversions, revenue, first_revenue_at }` — the per-link click→signup→revenue rollup Almanac computes by joining `identities`/`conversions` to `clicks` on `short_code` (added to Almanac for Folio). Folio maps each back to its block via the stored `almanac_code` and surfaces it in the editor via `GET /api/folio/stats` (revenue is converted from Almanac's minor units for display).
 
 ## 5. Data model — Cloudflare D1 (no Supabase, no profiles FK)
 

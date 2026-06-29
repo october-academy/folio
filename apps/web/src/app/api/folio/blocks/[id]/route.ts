@@ -31,7 +31,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   // Register the link with Almanac if it doesn't yet carry a code (no-op when off).
   const finalData =
     normalized.type === "link"
-      ? await ensureAlmanacCode(id, normalized.data as LinkBlockData)
+      ? await ensureAlmanacCode(id, normalized.data as LinkBlockData, ctx.page.slug)
       : normalized.data;
 
   await updateBlock({
