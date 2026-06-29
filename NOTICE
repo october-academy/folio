@@ -17,7 +17,7 @@ project, lifted verbatim under the MIT License:
     - packages/buttons/brands.css     (per-brand button CSS variables)
     - packages/buttons/icons/*.svg    (full-color brand icons, unmodified)
 
-  See packages/buttons/LICENSE for the full LittleLink MIT license text.
+  See packages/buttons/NOTICE for the full LittleLink MIT license text.
 
 This product bundles the Roboto font for OG-image rendering:
 
