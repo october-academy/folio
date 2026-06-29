@@ -1,6 +1,6 @@
 {
   "name": "@folio/core",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "type": "module",
   "license": "MIT",
   "description": "Folio block taxonomy, D1 schema, and zod types (single source of truth).",

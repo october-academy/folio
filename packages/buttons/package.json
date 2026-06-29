@@ -1,6 +1,6 @@
 {
   "name": "@folio/buttons",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "type": "module",
   "license": "MIT",
   "description": "LittleLink brand buttons (MIT) for Folio: brands.css + icons + generated manifest + <BrandButton> + URL→brand auto-detect.",

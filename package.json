@@ -1,6 +1,6 @@
 {
   "name": "folio",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Open-source, self-hostable, attribution-native link-in-bio builder — Cloudflare + PostHog only.",

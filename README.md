@@ -110,4 +110,5 @@ LinkStack (AGPL) was a clean-room reference only; no AGPL code or runtime depend
   live preview + drag reorder; PostHog `folio_page_view` / `folio_link_click`.
 - **v0.2** ✅ — Almanac integration (per-link conversion in the editor); self-hosted favicon fetch;
   email/phone/vcard/youtube/qr/image blocks; theme presets; `@folio/mcp-server` MCP tools.
-- **v1.0** — multi-user + auth; theme upload; import/export; custom domains.
+- **v1.0** ✅ — multi-user via Cloudflare Access (token mode still default); custom theme upload;
+  portable import/export; per-link analytics view; custom-domain docs.
