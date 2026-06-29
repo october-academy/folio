@@ -826,6 +826,21 @@ function BlockEditor({
           />
         </div>
       ) : null}
+
+      {block.type === "qr" ? (
+        <div className="flex flex-col gap-2">
+          <Input
+            value={String(d.target ?? "")}
+            onChange={(e) => onUpdateData(block.id, { target: e.target.value })}
+            placeholder="QR로 만들 https:// 링크"
+          />
+          <Input
+            value={String(d.caption ?? "")}
+            onChange={(e) => onUpdateData(block.id, { caption: e.target.value })}
+            placeholder="캡션 (선택)"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

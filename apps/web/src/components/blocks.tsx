@@ -7,6 +7,7 @@ import type {
   LinkBlockData,
   PhoneBlockData,
   PublicBlock,
+  QRBlockData,
   TextBlockData,
   VCardBlockData,
   YouTubeBlockData,
@@ -14,6 +15,7 @@ import type {
 import {
   DividerBlock,
   HeadingBlock,
+  QRBlock,
   TextBlock,
   VCardBlock,
   YouTubeBlock,
@@ -41,6 +43,8 @@ export function BlockRenderer({ block, slug }: { block: PublicBlock; slug: strin
       return <YouTubeBlock data={block.data as YouTubeBlockData} />;
     case "vcard":
       return <VCardBlock data={block.data as VCardBlockData} />;
+    case "qr":
+      return <QRBlock data={block.data as QRBlockData} />;
     default:
       return null;
   }

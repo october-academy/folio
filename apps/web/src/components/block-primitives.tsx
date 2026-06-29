@@ -2,12 +2,14 @@
 import type {
   DividerBlockData,
   HeadingBlockData,
+  QRBlockData,
   TextBlockData,
   VCardBlockData,
   YouTubeBlockData,
 } from "@folio/core";
 import { vcardDataUri, vcardFilename } from "@folio/core";
 import { ContactRound } from "lucide-react";
+import { qrModules, qrSvgPath } from "@/lib/qr";
 
 /** Static (server-renderable) block renderers — no client/tracking deps. */
 
@@ -94,5 +96,39 @@ export function VCardBlock({ data }: { data: VCardBlockData }) {
       </span>
       <span className="text-lg font-black sm:text-xl">↓</span>
     </a>
+  );
+}
+
+/**
+ * QR code for a link/page. Rendered as inline SVG at SSR time. The QR itself is
+ * always black-on-white (regardless of theme) so phone cameras can scan it; the
+ * brutalist frame around it follows the theme.
+ */
+export function QRBlock({ data }: { data: QRBlockData }) {
+  const modules = qrModules(data.target);
+  const n = modules.length;
+  const quiet = 2; // mandatory quiet zone (in modules)
+  const size = n + quiet * 2;
+  const path = qrSvgPath(modules);
+  return (
+    <figure className="flex flex-col items-center gap-2 border-[3px] border-foreground bg-background p-4 shadow-brutal-sm">
+      <svg
+        viewBox={`0 0 ${size} ${size}`}
+        width={200}
+        height={200}
+        role="img"
+        aria-label={data.caption ? `QR: ${data.caption}` : `QR code for ${data.target}`}
+        shapeRendering="crispEdges"
+        className="h-auto w-full max-w-[200px] border-[3px] border-foreground"
+      >
+        <rect width={size} height={size} fill="#ffffff" />
+        <path d={path} transform={`translate(${quiet} ${quiet})`} fill="#000000" />
+      </svg>
+      {data.caption ? (
+        <figcaption className="text-center text-sm font-bold text-foreground">
+          {data.caption}
+        </figcaption>
+      ) : null}
+    </figure>
   );
 }

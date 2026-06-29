@@ -3,7 +3,7 @@
 
 import { getBrand } from "@folio/buttons";
 import { extractYouTubeId } from "@folio/core";
-import { ContactRound, Link2, Mail, Phone, Play } from "lucide-react";
+import { ContactRound, Link2, Mail, Phone, Play, QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { EditorBlock, SocialDraft } from "./editor-helpers";
 
@@ -92,6 +92,14 @@ function PreviewBlock({ block }: { block: EditorBlock }) {
           <ContactRound className="h-3.5 w-3.5" />
         </span>
         <span className="truncate">{String(d.label || d.name || "연락처")}</span>
+      </div>
+    );
+  }
+  if (block.type === "qr") {
+    return (
+      <div className="flex flex-col items-center gap-1 border-[3px] border-foreground bg-background p-3 shadow-brutal-sm">
+        <QrCode className="h-12 w-12 text-foreground" />
+        {d.caption ? <span className="truncate text-xs font-bold">{String(d.caption)}</span> : null}
       </div>
     );
   }

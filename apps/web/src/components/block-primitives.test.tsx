@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import {
   DividerBlock,
   HeadingBlock,
+  QRBlock,
   TextBlock,
   VCardBlock,
   YouTubeBlock,
@@ -44,6 +45,16 @@ describe("block primitives render", () => {
     expect(html).toContain('href="data:text/vcard');
     expect(html).toContain('download="hogyun-yu.vcf"');
     expect(html).toContain("연락처 저장");
+  });
+
+  test("qr renders an inline svg (black-on-white) with a caption", () => {
+    const html = renderToStaticMarkup(
+      <QRBlock data={{ target: "https://folio.example/@me", caption: "스캔하세요" }} />,
+    );
+    expect(html).toContain("<svg");
+    expect(html).toContain('fill="#ffffff"'); // white background (scannable)
+    expect(html).toContain('fill="#000000"'); // black modules
+    expect(html).toContain("스캔하세요");
   });
 });
 

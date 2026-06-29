@@ -98,7 +98,12 @@ Learned (clean-room) from LinkStack's `type` + `type_params` + our needs. Each b
 
 Dropped from the Agentic30 original: `landing_card` and the gamification toggles (level/badges/landings) — Agentic30-specific.
 
-> **v0.1 implements `link` / `heading` / `text` / `divider`.** The remaining block types (email/phone/vcard/youtube/qr/image) are v0.2 (§16).
+> **v0.1 shipped `link` / `heading` / `text` / `divider`.** v0.2 adds the remaining
+> types: `email` (mailto), `phone` (tel), `image` (optional tracked href), `youtube`
+> (privacy-friendly `youtube-nocookie` embed), `vcard` (downloadable `.vcf` via a
+> `data:` URI), and `qr` (SSR-rendered SVG, black-on-white, via the MIT
+> `qrcode-generator` lib). email/phone/image fire the standalone `folio_link_click`
+> event (with a `kind` prop); youtube/vcard/qr are inert/static.
 
 ## 7. Brand button system (LittleLink, MIT — lifted)
 

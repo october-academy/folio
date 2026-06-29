@@ -199,6 +199,16 @@ describe("normalizeBlockData", () => {
     expect(normalizeBlockData("vcard", { org: "no name" })).toHaveProperty("error");
   });
 
+  test("qr requires an https target, keeps caption", () => {
+    expect(
+      normalizeBlockData("qr", { target: "https://folio.example/@me", caption: "내 페이지" }),
+    ).toEqual({
+      type: "qr",
+      data: { target: "https://folio.example/@me", caption: "내 페이지" },
+    });
+    expect(normalizeBlockData("qr", { target: "not-a-url" })).toHaveProperty("error");
+  });
+
   test("MAX_BLOCKS is a positive integer", () => {
     expect(MAX_BLOCKS).toBeGreaterThan(0);
   });

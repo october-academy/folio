@@ -12,6 +12,7 @@ export const BLOCK_TYPE_OPTIONS: Array<{ value: BlockType; label: string }> = [
   { value: "image", label: "이미지" },
   { value: "youtube", label: "YouTube" },
   { value: "vcard", label: "연락처(vCard)" },
+  { value: "qr", label: "QR 코드" },
 ];
 
 /** All brands, sorted by label, for the social/link brand pickers. */
@@ -62,6 +63,8 @@ export function createDraftBlock(type: BlockType): EditorBlock {
         ...base,
         data: { name: "", label: "", org: "", role: "", email: "", phone: "", url: "" },
       };
+    case "qr":
+      return { ...base, data: { target: "https://", caption: "" } };
     default:
       return { ...base, data: { size: "md" } };
   }

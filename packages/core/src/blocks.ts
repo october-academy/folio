@@ -25,6 +25,7 @@ export const BLOCK_TYPES = [
   "image",
   "youtube",
   "vcard",
+  "qr",
 ] as const;
 export type BlockType = (typeof BLOCK_TYPES)[number];
 export const BLOCK_TYPE_SET: ReadonlySet<string> = new Set(BLOCK_TYPES);
@@ -67,6 +68,7 @@ export type VCardBlockData = {
   phone?: string;
   url?: string;
 };
+export type QRBlockData = { target: string; caption?: string };
 
 export type BlockData =
   | LinkBlockData
@@ -77,7 +79,8 @@ export type BlockData =
   | PhoneBlockData
   | ImageBlockData
   | YouTubeBlockData
-  | VCardBlockData;
+  | VCardBlockData
+  | QRBlockData;
 
 // --- zod schemas (structural; for MCP/external validation & type inference) --
 
@@ -124,6 +127,10 @@ export const vcardDataSchema = z.object({
   email: z.string().optional(),
   phone: z.string().optional(),
   url: z.string().optional(),
+});
+export const qrDataSchema = z.object({
+  target: z.string(),
+  caption: z.string().optional(),
 });
 
 // --- Runtime normalization (the path API routes use) ------------------------
@@ -251,6 +258,15 @@ export function normalizeBlockData(
         ...(url ? { url } : {}),
       },
     };
+  }
+
+  if (blockType === "qr") {
+    const target = normalizeUrl(source.target ?? source.url, {
+      allowHttpLocal: opts.allowHttpLocal,
+    });
+    if (!target) return { error: "QR 대상 https:// 링크가 필요합니다" };
+    const caption = sanitizeText(source.caption, "", 120) || undefined;
+    return { type: blockType, data: { target, ...(caption ? { caption } : {}) } };
   }
 
   // link
