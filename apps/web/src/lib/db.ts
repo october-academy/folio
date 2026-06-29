@@ -6,12 +6,12 @@ import {
   type FolioBlockRow,
   type FolioPage,
   type FolioPageRow,
-  type PageSettingsUpdate,
-  type PublicBlock,
-  type PublicFolioPage,
   normalizeSettings,
   normalizeSocials,
   normalizeTheme,
+  type PageSettingsUpdate,
+  type PublicBlock,
+  type PublicFolioPage,
 } from "@folio/core";
 import { getEnv, getSiteUrl } from "./cf";
 
@@ -275,7 +275,7 @@ export async function getPublicPage(slug: string): Promise<PublicFolioPage | nul
   if (!normalizedSlug) return null;
 
   const page = await getPageBySlug(normalizedSlug);
-  if (!page || !page.is_published) return null;
+  if (!page?.is_published) return null;
 
   const blocks = await listBlocks(page.id);
   const publicBlocks: PublicBlock[] = blocks

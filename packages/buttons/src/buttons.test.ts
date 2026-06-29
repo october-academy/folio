@@ -2,8 +2,8 @@ import { describe, expect, test } from "bun:test";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { BRANDS, BRAND_KEYS } from "./brands.generated";
-import { HOSTNAME_BRAND_MAP, detectBrand } from "./hostname-map";
+import { BRAND_KEYS, BRANDS } from "./brands.generated";
+import { detectBrand, HOSTNAME_BRAND_MAP } from "./hostname-map";
 
 const ICONS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "icons");
 

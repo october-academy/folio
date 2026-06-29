@@ -1,4 +1,4 @@
-import { BRANDS, BRAND_KEYS } from "@folio/buttons";
+import { BRAND_KEYS, BRANDS } from "@folio/buttons";
 import type { BlockType } from "@folio/core";
 
 export const BLOCK_TYPE_OPTIONS: Array<{ value: BlockType; label: string }> = [

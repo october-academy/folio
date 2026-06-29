@@ -7,7 +7,7 @@
  * and exits non-zero if anything in the GPL family is found. Zero deps; runs in
  * plain Node.
  */
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 

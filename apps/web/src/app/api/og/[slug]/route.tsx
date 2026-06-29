@@ -1,5 +1,5 @@
-import { loadPublicPage } from "@/lib/public-page";
 import { ImageResponse } from "next/og";
+import { loadPublicPage } from "@/lib/public-page";
 
 export const runtime = "edge";
 
@@ -98,7 +98,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
               }}
             >
               {page.avatar_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={page.avatar_url}
                   width={180}

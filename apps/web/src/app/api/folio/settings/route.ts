@@ -1,7 +1,7 @@
+import { buildPageSettingsUpdate } from "@folio/core";
 import { allowHttpLocal } from "@/lib/cf";
 import { getPageById, updatePageSettings } from "@/lib/db";
 import { badRequest, invalidate, withEditorPage } from "@/lib/editor-api";
-import { buildPageSettingsUpdate } from "@folio/core";
 
 /** PUT /api/folio/settings — update display name, avatar, description, socials, theme. */
 export async function PUT(request: Request) {

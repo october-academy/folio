@@ -19,9 +19,9 @@
     "verify": "bun run check:licenses && bun run lint && bun run typecheck && bun run test"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "turbo": "^2.8.16",
-    "typescript": "^5.7.3"
+    "@biomejs/biome": "^2.5.1",
+    "turbo": "^2.10.0",
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=22.13.0"

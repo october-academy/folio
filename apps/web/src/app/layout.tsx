@@ -1,5 +1,5 @@
-import { PostHogInit } from "@/components/PostHogInit";
 import type { Metadata } from "next";
+import { PostHogInit } from "@/components/PostHogInit";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,11 +10,7 @@ export const metadata: Metadata = {
   description: "Your link-in-bio, with attribution. Open source, on Cloudflare + PostHog.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>

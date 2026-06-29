@@ -1,6 +1,6 @@
+import { normalizeReorderPayload } from "@folio/core";
 import { blockIdsOnPage, reorderBlocks } from "@/lib/db";
 import { badRequest, invalidate, withEditorPage } from "@/lib/editor-api";
-import { normalizeReorderPayload } from "@folio/core";
 
 /** PUT /api/folio/blocks/reorder — persist a new block order. */
 export async function PUT(request: Request) {

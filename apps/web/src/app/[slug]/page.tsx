@@ -1,7 +1,7 @@
-import { FolioView } from "@/components/FolioView";
-import { loadPublicPage } from "@/lib/public-page";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { FolioView } from "@/components/FolioView";
+import { loadPublicPage } from "@/lib/public-page";
 
 export const dynamic = "force-dynamic";
 
@@ -41,11 +41,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function SlugPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function SlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const page = await loadPublicPage(slug);
   if (!page) notFound();

@@ -7,7 +7,7 @@
  *
  * Run: `bun run scripts/build-brands.ts`  (also wired as the package `build`).
  */
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 

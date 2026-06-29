@@ -1,7 +1,5 @@
 "use client";
 
-import { Button, Input, Select, Textarea } from "@/components/ui";
-import { cn } from "@/lib/utils";
 import { detectBrand } from "@folio/buttons";
 import type { BlockType } from "@folio/core";
 import {
@@ -17,16 +15,18 @@ import {
   Trash2,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { LivePreview } from "./LivePreview";
+import { Button, Input, Select, Textarea } from "@/components/ui";
+import { cn } from "@/lib/utils";
 import {
   BLOCK_TYPE_OPTIONS,
   BRAND_OPTIONS,
-  type EditorBlock,
-  type SocialDraft,
   blockTypeLabel,
   createDraftBlock,
+  type EditorBlock,
   reorderBlocks,
+  type SocialDraft,
 } from "./editor-helpers";
+import { LivePreview } from "./LivePreview";
 
 const TOKEN_KEY = "folio_admin_token";
 
@@ -497,13 +497,7 @@ async function errorOf(res: Response): Promise<string | null> {
   }
 }
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="flex flex-col gap-1.5">
       <span className="text-xs font-black uppercase tracking-wide text-muted-foreground">

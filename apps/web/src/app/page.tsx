@@ -1,9 +1,9 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { FolioView } from "@/components/FolioView";
 import { getOwnerId } from "@/lib/cf";
 import { getOwnerPage } from "@/lib/db";
 import { loadPublicPage } from "@/lib/public-page";
-import type { Metadata } from "next";
-import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 

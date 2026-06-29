@@ -5,16 +5,10 @@ import type {
   PublicBlock,
   TextBlockData,
 } from "@folio/core";
-import { LinkBlock } from "./LinkBlock";
 import { DividerBlock, HeadingBlock, TextBlock } from "./block-primitives";
+import { LinkBlock } from "./LinkBlock";
 
-export function BlockRenderer({
-  block,
-  slug,
-}: {
-  block: PublicBlock;
-  slug: string;
-}) {
+export function BlockRenderer({ block, slug }: { block: PublicBlock; slug: string }) {
   switch (block.type) {
     case "link":
       return <LinkBlock id={block.id} slug={slug} data={block.data as LinkBlockData} />;

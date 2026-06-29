@@ -1,4 +1,4 @@
-import { type OpenNextConfig, defineCloudflareConfig } from "@opennextjs/cloudflare/config";
+import { defineCloudflareConfig, type OpenNextConfig } from "@opennextjs/cloudflare/config";
 
 const cloudflareConfig = defineCloudflareConfig({});
 const splitFunctionOverride =

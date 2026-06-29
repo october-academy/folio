@@ -1,8 +1,8 @@
+import { MAX_BLOCKS } from "@folio/core";
 import { normalizeIncomingBlock } from "@/lib/block-input";
 import { allowHttpLocal } from "@/lib/cf";
 import { countBlocks, createBlock } from "@/lib/db";
 import { badRequest, invalidate, withEditorPage } from "@/lib/editor-api";
-import { MAX_BLOCKS } from "@folio/core";
 
 /** POST /api/folio/blocks — create a block. */
 export async function POST(request: Request) {

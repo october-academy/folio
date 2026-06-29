@@ -1,7 +1,7 @@
 import type { PublicFolioPage } from "@folio/core";
+import { BlockRenderer } from "./blocks";
 import { FolioTracker } from "./FolioTracker";
 import { ProfileHeader } from "./ProfileHeader";
-import { BlockRenderer } from "./blocks";
 
 function EmptyState() {
   return (

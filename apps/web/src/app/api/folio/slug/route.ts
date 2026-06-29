@@ -1,6 +1,6 @@
+import { validateSlug } from "@folio/core";
 import { getPageById, isSlugTaken, updateSlug } from "@/lib/db";
 import { badRequest, invalidate, withEditorPage } from "@/lib/editor-api";
-import { validateSlug } from "@folio/core";
 
 /** PUT /api/folio/slug — change the page slug (validated + uniqueness-checked). */
 export async function PUT(request: Request) {

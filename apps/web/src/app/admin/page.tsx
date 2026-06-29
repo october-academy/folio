@@ -1,5 +1,5 @@
-import { FolioEditor } from "@/components/editor/FolioEditor";
 import type { Metadata } from "next";
+import { FolioEditor } from "@/components/editor/FolioEditor";
 
 export const metadata: Metadata = {
   title: "편집기",

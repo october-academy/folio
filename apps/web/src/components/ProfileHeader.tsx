@@ -18,7 +18,6 @@ function SocialButtons({ socials }: { socials: PublicFolioPage["socials"] }) {
             className={`button button-${social.brand} folio-social`}
           >
             {spec ? (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 className="icon"
                 src={`/brand-icons/${spec.icon}.svg`}
@@ -44,7 +43,6 @@ export function ProfileHeader({ page }: { page: PublicFolioPage }) {
       <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:gap-6 sm:text-left">
         <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden border-[4px] border-foreground bg-accent text-3xl font-black text-accent-foreground shadow-brutal sm:order-last sm:h-24 sm:w-24">
           {page.avatar_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={page.avatar_url}
               alt={page.display_name}

@@ -109,7 +109,9 @@ body {
   border: 3px solid var(--foreground);
   border-radius: 0;
   box-shadow: 4px 4px 0 var(--shadow-color);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 .folio-brand-button:hover {
   transform: translate(-1px, -1px);
@@ -139,7 +141,9 @@ body {
   height: 44px;
   border: 3px solid var(--foreground);
   box-shadow: 2px 2px 0 var(--shadow-color);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 .folio-social:hover {
   transform: translate(-1px, -1px);

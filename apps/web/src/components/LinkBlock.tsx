@@ -1,25 +1,17 @@
 "use client";
 
+import { BrandButton, getBrand } from "@folio/buttons";
+import { hostnameOf, type LinkBlockData } from "@folio/core";
+import { Link2 } from "lucide-react";
 import { capture } from "@/lib/posthog-client";
 import { cn } from "@/lib/utils";
-import { BrandButton, getBrand } from "@folio/buttons";
-import { type LinkBlockData, hostnameOf } from "@folio/core";
-import { Link2 } from "lucide-react";
 
 /**
  * A link block on the public page. Fires `folio_link_click` on click
  * (standalone analytics path). Renders a LittleLink brand button when the link
  * has a known brand, otherwise a brutalist favicon/generic button.
  */
-export function LinkBlock({
-  id,
-  slug,
-  data,
-}: {
-  id: string;
-  slug: string;
-  data: LinkBlockData;
-}) {
+export function LinkBlock({ id, slug, data }: { id: string; slug: string; data: LinkBlockData }) {
   const { url, title, brand, favicon_url, description, highlight } = data;
 
   const onClick = () => {
@@ -61,7 +53,6 @@ export function LinkBlock({
       <span className="flex min-w-0 items-center gap-3">
         <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center border-[3px] border-foreground bg-secondary text-foreground shadow-brutal-sm">
           {favicon_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img src={favicon_url} alt="" width={18} height={18} className="h-[18px] w-[18px]" />
           ) : (
             <Link2 className="h-4 w-4" aria-hidden="true" />

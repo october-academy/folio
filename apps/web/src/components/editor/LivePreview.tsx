@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { getBrand } from "@folio/buttons";
 import { Link2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { EditorBlock, SocialDraft } from "./editor-helpers";
 
 function BrandChip({ brand, label }: { brand: string; label: string }) {
@@ -10,7 +10,6 @@ function BrandChip({ brand, label }: { brand: string; label: string }) {
   return (
     <span className={`button button-${brand} folio-brand-button`}>
       {spec ? (
-        // eslint-disable-next-line @next/next/no-img-element
         <img className="icon" src={`/brand-icons/${spec.icon}.svg`} alt="" width={20} height={20} />
       ) : (
         <Link2 className="h-5 w-5" />
@@ -99,7 +98,6 @@ export function LivePreview({
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="flex h-16 w-16 items-center justify-center overflow-hidden border-[3px] border-foreground bg-accent text-2xl font-black text-accent-foreground shadow-brutal-sm">
             {avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
               <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
             ) : (
               initial
@@ -125,7 +123,6 @@ export function LivePreview({
                       style={{ width: 36, height: 36 }}
                     >
                       {spec ? (
-                        // eslint-disable-next-line @next/next/no-img-element
                         <img
                           className="icon"
                           src={`/brand-icons/${spec.icon}.svg`}
