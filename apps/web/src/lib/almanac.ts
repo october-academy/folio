@@ -2,23 +2,21 @@
 import "server-only";
 import type { LinkBlockData } from "@folio/core";
 import {
-  type AlmanacLink,
-  type AlmanacStats,
-  almanacShortUrl,
-  mintShortCode,
-  parseAlmanacLink,
-  parseAlmanacLinkStats,
-  shortCodeOf,
-} from "./almanac-util";
+  type LinkStatsRow,
+  linkCreateRequestSchema,
+  linkCreateResponseSchema,
+  linksResponseSchema,
+} from "./almanac-contract";
+import { type AlmanacStats, almanacShortUrl, mintShortCode, toAlmanacStats } from "./almanac-util";
 import { getEnv } from "./cf";
 
 /**
  * Almanac integration (optional, first-class). When `ALMANAC_URL` +
  * `ALMANAC_API_KEY` are set, each link block is registered as an Almanac short
- * link so clicks join Almanac's click→signup→revenue ledger (apps/edge). When
- * unset — or on any error — Folio degrades to the standalone PostHog path.
- *
- * Every network call is wrapped so a failure NEVER breaks an edit or a render.
+ * link so clicks join Almanac's click→signup→revenue ledger (apps/edge). Requests
+ * + responses are validated against the explicit zod contract (`almanac-contract.ts`,
+ * mirroring `@almanac/contract`). When unset — or on any error / contract mismatch —
+ * Folio degrades to the standalone PostHog path; a failure NEVER breaks an edit/render.
  */
 
 const TIMEOUT_MS = 5000;
@@ -44,31 +42,38 @@ export function shortUrlForCode(code: string): string | null {
   return cfg ? almanacShortUrl(cfg.url, code) : null;
 }
 
+export type RegisteredLink = { code: string; short_url: string };
+
 /**
- * Register a destination as an Almanac short link. Folio mints the short code, so
- * a 409 ("already exists") on a retry is success — the deterministic code is
- * already live. Returns null on any real failure.
+ * Register a destination as an Almanac short link. Folio mints the short code, so a
+ * 409 ("already exists") on a retry is success — the deterministic code is already
+ * live. Returns null on any real failure or contract mismatch.
  */
 export async function registerLink(params: {
   destination: string;
   label?: string;
   sourceId: string;
   campaign?: string;
-}): Promise<AlmanacLink | null> {
+}): Promise<RegisteredLink | null> {
   const cfg = config();
   if (!cfg) return null;
   const shortCode = mintShortCode(params.sourceId);
+
+  // Build + validate the request against the contract before sending.
+  const req = linkCreateRequestSchema.safeParse({
+    shortCode,
+    targetUrl: params.destination,
+    ogTitle: params.label || undefined,
+    channel: FOLIO_CHANNEL,
+    campaign: params.campaign || undefined,
+  });
+  if (!req.success) return null;
+
   try {
     const res = await fetch(`${cfg.url}/api/links`, {
       method: "POST",
       headers: { "content-type": "application/json", "x-api-key": cfg.key },
-      body: JSON.stringify({
-        shortCode,
-        targetUrl: params.destination,
-        ogTitle: params.label,
-        channel: FOLIO_CHANNEL,
-        ...(params.campaign ? { campaign: params.campaign } : {}),
-      }),
+      body: JSON.stringify(req.data),
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     // Already registered (deterministic code) → reuse it.
@@ -76,36 +81,53 @@ export async function registerLink(params: {
       return { code: shortCode, short_url: almanacShortUrl(cfg.url, shortCode) };
     }
     if (!res.ok) return null;
-    return parseAlmanacLink(await res.json(), cfg.url);
+    const parsed = linkCreateResponseSchema.safeParse(await res.json());
+    if (!parsed.success) return null;
+    return { code: parsed.data.shortCode, short_url: parsed.data.shortUrl };
   } catch {
     return null;
   }
 }
 
 /**
- * Fetch per-link attribution stats for every Folio-tracked link in one call,
- * keyed by short code. Returns an empty map when Almanac is off or on any error.
+ * Fetch per-link attribution stats for every Folio-tracked link in one call, keyed
+ * by short code. Parsed against the contract; tolerant of per-row drift so one bad
+ * row can't blank the whole panel. Empty map when Almanac is off or on any error.
  */
 export async function getLinkStatsMap(): Promise<Map<string, AlmanacStats>> {
   const cfg = config();
   const map = new Map<string, AlmanacStats>();
   if (!cfg) return map;
   try {
-    const res = await fetch(`${cfg.url}/api/links?range=90d&limit=100`, {
+    // Scope to Folio's own channel so the 100-link window covers Folio's links —
+    // not the whole shared Almanac instance (older Folio links would else drop out).
+    const res = await fetch(`${cfg.url}/api/links?range=90d&limit=100&channel=${FOLIO_CHANNEL}`, {
       headers: { "x-api-key": cfg.key },
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     if (!res.ok) return map;
-    const body = (await res.json()) as { links?: unknown };
-    const links = Array.isArray(body.links) ? body.links : [];
-    for (const row of links) {
-      const code = shortCodeOf(row);
-      if (code) map.set(code, parseAlmanacLinkStats(row));
-    }
+    const body = await res.json();
+
+    const whole = linksResponseSchema.safeParse(body);
+    const rows: LinkStatsRow[] = whole.success ? whole.data.links : extractRows(body); // contract drift → keep the rows that still conform
+
+    for (const row of rows) map.set(row.short_code, toAlmanacStats(row));
     return map;
   } catch {
     return map;
   }
+}
+
+/** Row-level salvage: validate each link independently, keep the conforming ones. */
+function extractRows(body: unknown): LinkStatsRow[] {
+  const raw =
+    body && typeof body === "object" && Array.isArray((body as { links?: unknown }).links)
+      ? (body as { links: unknown[] }).links
+      : [];
+  return raw.flatMap((r) => {
+    const parsed = linksResponseSchema.shape.links.element.safeParse(r);
+    return parsed.success ? [parsed.data] : [];
+  });
 }
 
 /**
