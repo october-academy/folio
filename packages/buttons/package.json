@@ -1,6 +1,6 @@
 {
   "name": "@folio/buttons",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "license": "MIT",
   "description": "LittleLink brand buttons (MIT) for Folio: brands.css + icons + generated manifest + <BrandButton> + URL→brand auto-detect.",
@@ -10,7 +10,14 @@
     "./icons/*": "./icons/*"
   },
   "types": "./src/index.ts",
-  "files": ["src", "icons", "brands.css", "littlelink-catalog.json", "LICENSE", "NOTICE"],
+  "files": [
+    "src",
+    "icons",
+    "brands.css",
+    "littlelink-catalog.json",
+    "LICENSE",
+    "NOTICE"
+  ],
   "scripts": {
     "build": "bun run scripts/build-brands.ts",
     "build:brands": "bun run scripts/build-brands.ts",

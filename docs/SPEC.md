@@ -170,8 +170,8 @@ folio/
 
 | Phase | Scope | "Done" |
 |---|---|---|
-| **v0.1** | single-tenant; D1 pages/blocks; core blocks (link/heading/text/divider); LittleLink brand buttons + URL auto-detect; public `/@slug` (KV cache, OG); editor + live preview + reorder; PostHog `folio_page_view`/`folio_link_click` | publish a Folio, links tracked in PostHog, 5-min Cloudflare deploy |
-| **v0.2** | **Almanac integration** (links → Almanac click_id → per-link conversion); favicon fetch; more blocks (email/phone/vcard/youtube/qr/image); themes; MCP tools | a bio link's first paid conversion attributed via Almanac |
+| **v0.1** ✅ | single-tenant; D1 pages/blocks; core blocks (link/heading/text/divider); LittleLink brand buttons + URL auto-detect; public `/@slug` (KV cache, OG); editor + live preview + reorder; PostHog `folio_page_view`/`folio_link_click` | publish a Folio, links tracked in PostHog, 5-min Cloudflare deploy |
+| **v0.2** ✅ | **Almanac integration** (links → Almanac click_id → per-link conversion shown in editor); favicon fetch (self-hosted, KV-cached); more blocks (email/phone/vcard/youtube/qr/image); theme presets; MCP tools (`@folio/mcp-server`) | a bio link's first paid conversion attributed via Almanac |
 | **v1.0** | multi-user + auth; theme upload; import/export; custom domains; per-link analytics view | teams; documented per-surface reliability |
 
 ## 17. Definition of done (v0.1)

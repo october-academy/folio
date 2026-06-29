@@ -96,9 +96,9 @@ LinkStack (AGPL) was a clean-room reference only; no AGPL code or runtime depend
 
 ## Roadmap
 
-- **v0.1** *(this release)* — single-tenant; D1 pages/blocks; link/heading/text/divider blocks;
+- **v0.1** ✅ — single-tenant; D1 pages/blocks; link/heading/text/divider blocks;
   LittleLink brand buttons + URL→platform auto-detect; public `/@slug` (KV cache, OG); editor with
   live preview + drag reorder; PostHog `folio_page_view` / `folio_link_click`.
-- **v0.2** — Almanac integration (per-link conversion); favicon fetch; more blocks
-  (email/phone/vcard/youtube/qr/image); themes; MCP tools.
+- **v0.2** ✅ — Almanac integration (per-link conversion in the editor); self-hosted favicon fetch;
+  email/phone/vcard/youtube/qr/image blocks; theme presets; `@folio/mcp-server` MCP tools.
 - **v1.0** — multi-user + auth; theme upload; import/export; custom domains.
