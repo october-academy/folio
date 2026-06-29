@@ -127,7 +127,7 @@ Dropped from the Agentic30 original: `landing_card` and the gamification toggles
 ## 9. Editor
 
 - Auth'd settings UI + **live preview** + **drag-and-drop reorder** (reuse the existing Agentic30 `BioSettingsClient`/`BioLivePreview`). Block CRUD + reorder API.
-- MCP tools (`update_folio`, `manage_blocks`, `get_folio`) — reuse the existing `bio.ts` MCP tools (create/edit a Folio from Claude Code / terminal — agentic-native, on-brand for the ICP).
+- MCP tools (`get_folio`, `update_folio`, `manage_blocks`) — v0.2, shipped as `apps/mcp-server` (`@folio/mcp-server`). A thin stdio MCP server that drives the same authenticated editor HTTP API (so validation stays in one place); configured with `FOLIO_URL` + `FOLIO_ADMIN_TOKEN`. Create/edit a Folio from Claude Code / terminal — agentic-native, on-brand for the ICP.
 
 ## 10. Auth / ownership
 
@@ -158,9 +158,10 @@ Reuse (port from `apps/web/src/app/bio/**`, `app/settings/bio/**`, `api/bio/**`,
 
 ```
 folio/
-  apps/web/          @folio/web      (Next.js on Cloudflare: public page + editor + APIs + OG)
-  packages/core/     @folio/core     (block taxonomy + D1 schema + zod types SSOT)
-  packages/buttons/  @folio/buttons  (LittleLink brands.css + icons + brands.json + <BrandButton>)
+  apps/web/          @folio/web        (Next.js on Cloudflare: public page + editor + APIs + OG)
+  apps/mcp-server/   @folio/mcp-server (v0.2: stdio MCP server — get_folio/update_folio/manage_blocks)
+  packages/core/     @folio/core       (block taxonomy + D1 schema + zod types SSOT)
+  packages/buttons/  @folio/buttons    (LittleLink brands.css + icons + brands.json + <BrandButton>)
   migrations/        D1 schema
   examples/ · LICENSE (MIT) · NOTICE (LittleLink MIT) · turbo.json · README.md
 ```

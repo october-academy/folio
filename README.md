@@ -74,9 +74,10 @@ bun run dev     # http://localhost:3000  (editor at /admin)
 
 ```
 folio/  (Turborepo + bun)
-  apps/web        @folio/web      — Next.js on Cloudflare/OpenNext: public /@slug + /admin editor + APIs + OG
-  packages/core   @folio/core     — block taxonomy + D1 schema + zod types (SSOT)
-  packages/buttons @folio/buttons — LittleLink brand buttons (MIT): brands.css + icons + brands.json + <BrandButton>
+  apps/web         @folio/web        — Next.js on Cloudflare/OpenNext: public /@slug + /admin editor + APIs + OG
+  apps/mcp-server  @folio/mcp-server — MCP server: edit your Folio from Claude Code / terminal (v0.2)
+  packages/core    @folio/core       — block taxonomy + D1 schema + zod types (SSOT)
+  packages/buttons @folio/buttons    — LittleLink brand buttons (MIT): brands.css + icons + brands.json + <BrandButton>
 ```
 
 - **Storage:** Cloudflare **D1** (`pages`, `blocks`) + **KV** (rendered public-page cache, invalidated on edit).
