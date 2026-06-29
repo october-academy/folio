@@ -7,6 +7,7 @@ import {
   type FolioBlockRow,
   type FolioPage,
   type FolioPageRow,
+  type LinkBlockData,
   normalizeSettings,
   normalizeSocials,
   normalizeTheme,
@@ -14,6 +15,7 @@ import {
   type PublicBlock,
   type PublicFolioPage,
 } from "@folio/core";
+import { shortUrlForCode } from "./almanac";
 import { getEnv, getSiteUrl } from "./cf";
 
 function db() {
@@ -271,6 +273,19 @@ export async function blockIdsOnPage(pageId: string): Promise<Set<string>> {
 
 // --- Public view -----------------------------------------------------------
 
+/**
+ * Resolve render-time fields on a block's data. For link blocks with an Almanac
+ * code, fills in `almanac_url` so the public page links through Almanac (the
+ * click→signup→revenue path). No-op when Almanac is off.
+ */
+function resolveBlockData(block: FolioBlock): BlockData {
+  if (block.type !== "link") return block.data;
+  const data = block.data as LinkBlockData;
+  if (!data.almanac_code) return data;
+  const shortUrl = shortUrlForCode(data.almanac_code);
+  return shortUrl ? { ...data, almanac_url: shortUrl } : data;
+}
+
 export async function getPublicPage(slug: string): Promise<PublicFolioPage | null> {
   const normalizedSlug = slug.trim().replace(/^@/, "").toLowerCase();
   if (!normalizedSlug) return null;
@@ -281,7 +296,7 @@ export async function getPublicPage(slug: string): Promise<PublicFolioPage | nul
   const blocks = await listBlocks(page.id);
   const publicBlocks: PublicBlock[] = blocks
     .filter((b) => b.is_visible)
-    .map((b) => ({ id: b.id, type: b.type, data: b.data }));
+    .map((b) => ({ id: b.id, type: b.type, data: resolveBlockData(b) }));
 
   const siteUrl = getSiteUrl();
   return {

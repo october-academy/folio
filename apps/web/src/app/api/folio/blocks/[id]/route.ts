@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+import type { LinkBlockData } from "@folio/core";
+import { ensureAlmanacCode } from "@/lib/almanac";
 import { normalizeIncomingBlock } from "@/lib/block-input";
 import { allowHttpLocal } from "@/lib/cf";
 import { deleteBlock, getBlock, updateBlock } from "@/lib/db";
@@ -26,11 +28,17 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   });
   if ("error" in normalized) return badRequest(normalized.error);
 
+  // Register the link with Almanac if it doesn't yet carry a code (no-op when off).
+  const finalData =
+    normalized.type === "link"
+      ? await ensureAlmanacCode(id, normalized.data as LinkBlockData)
+      : normalized.data;
+
   await updateBlock({
     id,
     pageId: ctx.page.id,
     type: normalized.type,
-    data: normalized.data,
+    data: finalData,
     position:
       typeof body.position === "number" && body.position >= 0 ? body.position : existing.position,
     isVisible: typeof body.is_visible === "boolean" ? body.is_visible : existing.is_visible,

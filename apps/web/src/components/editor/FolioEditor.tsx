@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Input, Select, Textarea } from "@/components/ui";
+import type { AlmanacStats } from "@/lib/almanac-util";
 import { cn } from "@/lib/utils";
 import {
   BLOCK_TYPE_OPTIONS,
@@ -54,6 +55,7 @@ export function FolioEditor() {
   const [publicUrl, setPublicUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [almanacStats, setAlmanacStats] = useState<Record<string, AlmanacStats>>({});
 
   useEffect(() => {
     setToken(localStorage.getItem(TOKEN_KEY));
@@ -123,6 +125,14 @@ export function FolioEditor() {
           .sort((a, b) => a.position - b.position),
       );
       setPublicUrl(data.public_url ?? "");
+
+      // Non-blocking: per-link Almanac conversion stats (empty when Almanac is off).
+      authFetch("/api/folio/stats")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d: { enabled?: boolean; stats?: Record<string, AlmanacStats> } | null) => {
+          if (d?.enabled) setAlmanacStats(d.stats ?? {});
+        })
+        .catch(() => {});
     } catch (e) {
       setError(e instanceof Error ? e.message : "오류가 발생했습니다.");
     } finally {
@@ -454,6 +464,7 @@ export function FolioEditor() {
                       index={index}
                       total={blocks.length}
                       busy={busyBlockId === block.id}
+                      stat={almanacStats[block.id]}
                       onUpdate={updateBlock}
                       onUpdateData={updateBlockData}
                       onPersist={persistBlock}
@@ -506,6 +517,29 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       </span>
       {children}
     </label>
+  );
+}
+
+/** A compact Almanac stat chip shown on link blocks when attribution is on. */
+function StatBadge({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: number | string;
+  accent?: boolean;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 border-[2px] border-foreground px-1.5 py-0.5 text-[11px] font-black",
+        accent ? "bg-accent text-accent-foreground" : "bg-background text-foreground",
+      )}
+    >
+      <span className="opacity-70">{label}</span>
+      <span>{value}</span>
+    </span>
   );
 }
 
@@ -568,6 +602,7 @@ function BlockEditor({
   index,
   total,
   busy,
+  stat,
   onUpdate,
   onUpdateData,
   onPersist,
@@ -580,6 +615,7 @@ function BlockEditor({
   index: number;
   total: number;
   busy: boolean;
+  stat?: AlmanacStats;
   onUpdate: (id: string, patch: Partial<EditorBlock>) => void;
   onUpdateData: (id: string, patch: Record<string, unknown>) => void;
   onPersist: (block: EditorBlock) => void;
@@ -629,6 +665,17 @@ function BlockEditor({
           </Button>
         </div>
       </div>
+
+      {block.type === "link" && stat ? (
+        <div className="mb-2 flex flex-wrap items-center gap-1.5">
+          <StatBadge label="클릭" value={stat.clicks} />
+          <StatBadge label="가입" value={stat.signups} />
+          <StatBadge label="전환" value={stat.conversions} accent={stat.conversions > 0} />
+          {stat.revenue > 0 ? (
+            <StatBadge label="매출" value={`$${stat.revenue.toLocaleString()}`} accent />
+          ) : null}
+        </div>
+      ) : null}
 
       {block.type === "link" ? (
         <div className="flex flex-col gap-2">

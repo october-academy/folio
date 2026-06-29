@@ -47,8 +47,14 @@ export type LinkBlockData = {
   favicon_url?: string;
   description?: string;
   highlight?: boolean;
-  /** Almanac short code when Almanac integration is on (v0.2). */
+  /** Almanac short code when Almanac integration is on (v0.2). Persisted. */
   almanac_code?: string;
+  /**
+   * Resolved Almanac short link (`${ALMANAC_URL}/l/<code>`). Render-time only —
+   * filled in by the public-page builder when Almanac is configured; never
+   * persisted (so changing ALMANAC_URL re-resolves it).
+   */
+  almanac_url?: string;
 };
 export type HeadingBlockData = { text: string };
 export type TextBlockData = { text: string };

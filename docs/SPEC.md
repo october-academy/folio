@@ -49,6 +49,11 @@ Folio works two ways:
 
 The link block stores both the destination URL and (when Almanac is on) the Almanac short code, so the page can render the short link and the editor shows per-link conversion, not just clicks.
 
+**v0.2 implementation (the integration seam).** Env-gated on `ALMANAC_URL` + `ALMANAC_API_KEY`; every call is wrapped so a failure degrades to the standalone PostHog path (never breaks an edit or a render). The contract Folio integrates against (`apps/web/src/lib/almanac.ts`, defensive parsing in `almanac-util.ts`):
+- **Register:** `POST {ALMANAC_URL}/api/links` `Authorization: Bearer {key}` body `{ destination, label?, source:"folio", source_id }` → `{ code, short_url?, click_id? }`. Called on first save of a link block; `code` is persisted as `almanac_code`.
+- **Public render:** the page builder fills `almanac_url = {ALMANAC_URL}/l/{code}` (render-time, not persisted) and the link's href points there, so clicks flow through Almanac's redirect into its ledger.
+- **Stats:** `GET {ALMANAC_URL}/api/links/{code}/stats` → `{ clicks, signups, conversions, revenue, first_revenue_at }`. Surfaced per-link in the editor via `GET /api/folio/stats`.
+
 ## 5. Data model — Cloudflare D1 (no Supabase, no profiles FK)
 
 ```sql

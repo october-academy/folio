@@ -27,10 +27,10 @@ Folio is an open-source, self-hostable [Linktree](https://linktr.ee) alternative
 - **Standalone (PostHog only):** Folio fires `folio_page_view` and `folio_link_click` events to
   PostHog. You get page-view and click funnels — *which links get clicked*.
 - **Full conversion attribution requires [Almanac](https://github.com/october-academy/almanac).**
-  When `ALMANAC_URL` / `ALMANAC_API_KEY` are set, each link becomes an Almanac short link carrying
-  a `click_id`, so clicks join to Almanac's click→signup→revenue ledger — *which link earned a
-  paying customer*. This is the v0.2 capability; v0.1 ships the standalone PostHog path with the
-  schema and seam ready for it.
+  When `ALMANAC_URL` / `ALMANAC_API_KEY` are set (v0.2), each link is registered as an Almanac short
+  link carrying a `click_id`, the public page links through it, and the editor shows per-link
+  **clicks · signups · conversions · revenue** — *which link earned a paying customer*. Unset, Folio
+  runs fully standalone on the PostHog path; every Almanac call degrades gracefully on failure.
 
 ## 5-minute deploy (Cloudflare)
 

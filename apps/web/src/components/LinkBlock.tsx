@@ -13,7 +13,10 @@ import { cn } from "@/lib/utils";
  * has a known brand, otherwise a brutalist favicon/generic button.
  */
 export function LinkBlock({ id, slug, data }: { id: string; slug: string; data: LinkBlockData }) {
-  const { url, title, brand, favicon_url, description, highlight } = data;
+  const { url, title, brand, favicon_url, description, highlight, almanac_url } = data;
+  // When Almanac is on, link through its short URL so the click joins the
+  // click→signup→revenue ledger; otherwise link straight to the destination.
+  const href = almanac_url ?? url;
 
   const onClick = () => {
     capture("folio_link_click", {
@@ -22,6 +25,7 @@ export function LinkBlock({ id, slug, data }: { id: string; slug: string; data: 
       brand: brand ?? null,
       target_host: hostnameOf(url),
       url,
+      almanac: almanac_url ? true : false,
     });
   };
 
@@ -30,7 +34,7 @@ export function LinkBlock({ id, slug, data }: { id: string; slug: string; data: 
     return (
       <BrandButton
         brand={brand}
-        href={url}
+        href={href}
         label={title || spec.label}
         onClick={onClick}
         target="_blank"
@@ -42,7 +46,7 @@ export function LinkBlock({ id, slug, data }: { id: string; slug: string; data: 
   return (
     <a
       data-testid="folio-link"
-      href={url}
+      href={href}
       onClick={onClick}
       target="_blank"
       rel="noopener noreferrer"

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
-import { MAX_BLOCKS } from "@folio/core";
+import { type LinkBlockData, MAX_BLOCKS } from "@folio/core";
+import { ensureAlmanacCode } from "@/lib/almanac";
 import { normalizeIncomingBlock } from "@/lib/block-input";
 import { allowHttpLocal } from "@/lib/cf";
-import { countBlocks, createBlock } from "@/lib/db";
+import { countBlocks, createBlock, updateBlock } from "@/lib/db";
 import { badRequest, invalidate, withEditorPage } from "@/lib/editor-api";
 
 /** POST /api/folio/blocks — create a block. */
@@ -29,6 +30,22 @@ export async function POST(request: Request) {
     position,
     isVisible: body.is_visible !== false,
   });
+
+  // Register the link as an Almanac short link (no-op when Almanac is off).
+  if (block.type === "link") {
+    const withCode = await ensureAlmanacCode(block.id, block.data as LinkBlockData);
+    if (withCode.almanac_code) {
+      await updateBlock({
+        id: block.id,
+        pageId: ctx.page.id,
+        type: "link",
+        data: withCode,
+        position: block.position,
+        isVisible: block.is_visible,
+      });
+      block.data = withCode;
+    }
+  }
 
   await invalidate(ctx.page.slug);
   return Response.json({ block }, { status: 201 });
