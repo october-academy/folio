@@ -7,8 +7,8 @@
  * and exits non-zero if anything in the GPL family is found. Zero deps; runs in
  * plain Node.
  */
-import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");

@@ -13,11 +13,10 @@ import { fileURLToPath } from "node:url";
 
 const PKG = join(dirname(fileURLToPath(import.meta.url)), "..");
 const css = readFileSync(join(PKG, "brands.css"), "utf8");
-const catalog: Record<string, { icon: string; label: string; alt: string }> =
-  JSON.parse(readFileSync(join(PKG, "littlelink-catalog.json"), "utf8"));
-const iconFiles = new Set(
-  readdirSync(join(PKG, "icons")).map((f) => f.replace(/\.svg$/, "")),
+const catalog: Record<string, { icon: string; label: string; alt: string }> = JSON.parse(
+  readFileSync(join(PKG, "littlelink-catalog.json"), "utf8"),
 );
+const iconFiles = new Set(readdirSync(join(PKG, "icons")).map((f) => f.replace(/\.svg$/, "")));
 
 type BrandSpec = {
   brand: string;
@@ -45,10 +44,9 @@ const brands: Record<string, BrandSpec> = {};
 // Each CSS rule block: "<selector> { <body> }". Match the brand key from the
 // last `.button-<key>` token in the selector (skips the base `.button` rule).
 const ruleRe = /([^{}]+)\{([^}]*)\}/g;
-let m: RegExpExecArray | null;
 const missingIcons: string[] = [];
 
-while ((m = ruleRe.exec(css)) !== null) {
+for (let m = ruleRe.exec(css); m !== null; m = ruleRe.exec(css)) {
   const selector = m[1]!;
   const body = m[2]!;
   const keyMatch = selector.match(/\.button-([a-z0-9-]+)/);
@@ -97,6 +95,5 @@ export const BRAND_KEYS: readonly string[] = ${JSON.stringify(keys)};
 
 writeFileSync(join(PKG, "src", "brands.generated.ts"), out);
 console.log(
-  `✓ brands.generated.ts — ${keys.length} brands` +
-    (missingIcons.length ? ` (no icon: ${missingIcons.join(", ")})` : ""),
+  `✓ brands.generated.ts — ${keys.length} brands${missingIcons.length ? ` (no icon: ${missingIcons.join(", ")})` : ""}`,
 );

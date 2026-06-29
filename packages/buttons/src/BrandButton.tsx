@@ -1,10 +1,7 @@
 import type { AnchorHTMLAttributes } from "react";
-import { type BrandSpec, BRANDS } from "./brands.generated.js";
+import { BRANDS, type BrandSpec } from "./brands.generated";
 
-export type BrandButtonProps = Omit<
-  AnchorHTMLAttributes<HTMLAnchorElement>,
-  "href"
-> & {
+export type BrandButtonProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
   /** LittleLink brand key, e.g. "github", "x", "buy-me-a-coffee". */
   brand: string;
   href: string;
@@ -47,7 +44,6 @@ export function BrandButton({
 
   return (
     <a {...rest} href={href} className={classes}>
-      {/* biome-ignore lint/a11y/useAltText: decorative; label is in the span */}
       <img
         className="icon"
         src={`${iconBasePath}/${spec.icon}.svg`}
@@ -56,9 +52,7 @@ export function BrandButton({
         height={24}
         aria-hidden="true"
       />
-      <span className="folio-brand-button__label">
-        {label ?? children ?? spec.label}
-      </span>
+      <span className="folio-brand-button__label">{label ?? children ?? spec.label}</span>
     </a>
   );
 }

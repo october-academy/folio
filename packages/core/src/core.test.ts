@@ -1,12 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import {
-  MAX_BLOCKS,
-  normalizeBlockData,
-  normalizeReorderPayload,
-} from "./blocks.js";
-import { normalizeSocials, validateSocials } from "./page.js";
-import { isReservedSlug, validateSlug } from "./slug.js";
-import { hostnameOf, normalizeUrl, sanitizeText } from "./validation.js";
+import { MAX_BLOCKS, normalizeBlockData, normalizeReorderPayload } from "./blocks";
+import { normalizeSocials, validateSocials } from "./page";
+import { isReservedSlug, validateSlug } from "./slug";
+import { hostnameOf, normalizeUrl, sanitizeText } from "./validation";
 
 describe("validation", () => {
   test("normalizeUrl keeps https, rejects http (non-local)", () => {
@@ -62,9 +58,7 @@ describe("normalizeBlockData", () => {
       type: "link",
       data: { url: "https://github.com/x", title: "My GitHub", brand: "github" },
     });
-    expect(normalizeBlockData("link", { url: "http://x.com" })).toHaveProperty(
-      "error",
-    );
+    expect(normalizeBlockData("link", { url: "http://x.com" })).toHaveProperty("error");
   });
 
   test("link drops invalid brand key, keeps highlight", () => {
@@ -117,9 +111,9 @@ describe("reorder + socials", () => {
         { id: "b", position: 1 },
       ],
     });
-    expect(
-      normalizeReorderPayload({ blocks: [{ id: "a", position: 3 }] }),
-    ).toEqual({ blocks: [{ id: "a", position: 3 }] });
+    expect(normalizeReorderPayload({ blocks: [{ id: "a", position: 3 }] })).toEqual({
+      blocks: [{ id: "a", position: 3 }],
+    });
     expect(normalizeReorderPayload({})).toHaveProperty("error");
   });
 

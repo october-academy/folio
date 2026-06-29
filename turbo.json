@@ -5,7 +5,13 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", ".open-next/**", "dist/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        ".open-next/**",
+        "dist/**",
+        "src/brands.generated.ts"
+      ]
     },
     "build:brands": {
       "inputs": ["brands.css", "icons/**", "scripts/build-brands.ts"],

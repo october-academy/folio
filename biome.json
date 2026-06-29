@@ -8,9 +8,13 @@
   "files": {
     "ignore": [
       "**/brands.generated.ts",
+      "**/brands.css",
       "**/*.json",
       "**/migrations/**",
       "**/icons/**",
+      "**/brand-icons/**",
+      "**/public/fonts/**",
+      "**/next-env.d.ts",
       "**/.next/**",
       "**/.open-next/**",
       "**/dist/**"

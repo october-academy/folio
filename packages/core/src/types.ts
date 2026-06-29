@@ -2,8 +2,8 @@
  * Storage row types (D1) and the public-page view types shared by the
  * repository and the renderers.
  */
-import type { BlockData, BlockType } from "./blocks.js";
-import type { Social, Theme } from "./page.js";
+import type { BlockData, BlockType } from "./blocks";
+import type { Social, Theme } from "./page";
 
 /** A row in the D1 `pages` table. JSON columns are stored as TEXT. */
 export type FolioPageRow = {

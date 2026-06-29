@@ -1,4 +1,4 @@
 /** @folio/buttons — LittleLink brand buttons (MIT) + URL→brand auto-detect. */
-export * from "./brands.generated.js";
-export * from "./BrandButton.js";
-export * from "./hostname-map.js";
+export * from "./brands.generated";
+export * from "./BrandButton";
+export * from "./hostname-map";

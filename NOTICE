@@ -19,6 +19,14 @@ project, lifted verbatim under the MIT License:
 
   See packages/buttons/LICENSE for the full LittleLink MIT license text.
 
+This product bundles the Roboto font for OG-image rendering:
+
+  Roboto — https://github.com/googlefonts/roboto-2
+  Copyright Google Inc. — Apache License 2.0
+
+  Bundled as:
+    - apps/web/public/fonts/og.ttf   (Roboto Bold, unmodified)
+
 ================================================================================
 Clean-room references (no code included)
 ================================================================================

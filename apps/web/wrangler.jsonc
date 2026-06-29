@@ -1,0 +1,38 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "folio",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Fix "__name is not defined" — https://opennext.js.org/cloudflare/howtos/keep_names
+  "keep_names": false,
+  "workers_dev": true,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "folio",
+      // Run `wrangler d1 create folio` and paste the id here.
+      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "FOLIO_CACHE",
+      // Run `wrangler kv namespace create FOLIO_CACHE` and paste the id here.
+      "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+    }
+  ],
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "http://localhost:3000",
+    "NEXT_PUBLIC_POSTHOG_HOST": "https://us.i.posthog.com",
+    "FOLIO_OWNER_ID": "owner"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

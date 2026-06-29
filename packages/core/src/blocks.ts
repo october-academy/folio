@@ -6,7 +6,7 @@
  * v0.2 will add email/phone/vcard/youtube/qr/image (SPEC §6).
  */
 import { z } from "zod";
-import { normalizeUrl, sanitizeText } from "./validation.js";
+import { normalizeUrl, sanitizeText } from "./validation";
 
 export const BLOCK_TYPES = ["link", "heading", "text", "divider"] as const;
 export type BlockType = (typeof BLOCK_TYPES)[number];
@@ -36,11 +36,7 @@ export type HeadingBlockData = { text: string };
 export type TextBlockData = { text: string };
 export type DividerBlockData = { size?: "sm" | "md" | "lg" };
 
-export type BlockData =
-  | LinkBlockData
-  | HeadingBlockData
-  | TextBlockData
-  | DividerBlockData;
+export type BlockData = LinkBlockData | HeadingBlockData | TextBlockData | DividerBlockData;
 
 // --- zod schemas (structural; for MCP/external validation & type inference) --
 
@@ -66,9 +62,7 @@ export const dividerDataSchema = z.object({
 export type NormalizedBlock = { type: BlockType; data: BlockData };
 export type NormalizeResult = NormalizedBlock | { error: string };
 
-export function isNormalizeError(
-  result: NormalizeResult,
-): result is { error: string } {
+export function isNormalizeError(result: NormalizeResult): result is { error: string } {
   return "error" in result;
 }
 
@@ -87,8 +81,7 @@ export function normalizeBlockData(
     return { error: "지원하지 않는 블록 타입입니다" };
   }
   const blockType = type as BlockType;
-  const source =
-    data && typeof data === "object" ? (data as Record<string, unknown>) : {};
+  const source = data && typeof data === "object" ? (data as Record<string, unknown>) : {};
 
   if (blockType === "divider") {
     const size = source.size;
@@ -120,8 +113,7 @@ export function normalizeBlockData(
       : undefined;
   const faviconUrl =
     typeof source.favicon_url === "string"
-      ? (normalizeUrl(source.favicon_url, { allowHttpLocal: opts.allowHttpLocal }) ??
-        undefined)
+      ? (normalizeUrl(source.favicon_url, { allowHttpLocal: opts.allowHttpLocal }) ?? undefined)
       : undefined;
   const description = sanitizeText(source.description, "", 200) || undefined;
   const almanacCode =
@@ -155,9 +147,7 @@ export function normalizeReorderPayload(
 
   if (Array.isArray(body.block_ids)) {
     if (body.block_ids.length === 0) return { error: "정렬할 블록이 필요합니다" };
-    const ids = body.block_ids
-      .map((entry) => sanitizeText(entry, "", 64))
-      .filter(Boolean);
+    const ids = body.block_ids.map((entry) => sanitizeText(entry, "", 64)).filter(Boolean);
     if (ids.length !== body.block_ids.length) {
       return { error: "정렬할 블록이 필요합니다" };
     }

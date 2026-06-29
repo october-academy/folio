@@ -3,8 +3,8 @@
  * builder. Storage-agnostic (no Supabase, no D1 here).
  */
 import { z } from "zod";
-import { BRAND_KEY_PATTERN } from "./blocks.js";
-import { normalizeUrl, sanitizeText } from "./validation.js";
+import { BRAND_KEY_PATTERN } from "./blocks";
+import { normalizeUrl, sanitizeText } from "./validation";
 
 /** A social/brand button in the page header: { brand, url }. Max 6. */
 export type Social = { brand: string; url: string };
@@ -108,11 +108,7 @@ export function buildPageSettingsUpdate(params: {
   const update: PageSettingsUpdate = {};
 
   if ("display_name" in body) {
-    update.display_name = sanitizeText(
-      body.display_name,
-      current.display_name || "Folio",
-      80,
-    );
+    update.display_name = sanitizeText(body.display_name, current.display_name || "Folio", 80);
   }
   if ("avatar_url" in body) {
     update.avatar_url = normalizeUrl(body.avatar_url, opts) ?? null;

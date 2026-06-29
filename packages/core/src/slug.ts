@@ -3,7 +3,7 @@
  * Pattern matches the Agentic30 bio slug rule: 3–30 chars, a–z 0–9 and hyphen,
  * not starting/ending with a hyphen.
  */
-import { sanitizeText } from "./validation.js";
+import { sanitizeText } from "./validation";
 
 export const SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/;
 

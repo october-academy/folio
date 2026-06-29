@@ -1,0 +1,45 @@
+{
+  "name": "@folio/web",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "predev": "node scripts/sync-buttons.mjs",
+    "dev": "next dev",
+    "prebuild": "node scripts/sync-buttons.mjs",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test ./src",
+    "test:e2e": "playwright test",
+    "lint": "biome check src",
+    "sync:buttons": "node scripts/sync-buttons.mjs",
+    "cf:build": "opennextjs-cloudflare build",
+    "deploy": "opennextjs-cloudflare build && wrangler deploy"
+  },
+  "dependencies": {
+    "@folio/buttons": "workspace:*",
+    "@folio/core": "workspace:*",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.17.0",
+    "next": "16.2.7",
+    "posthog-js": "^1.380.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "@opennextjs/cloudflare": "^1.19.11",
+    "@playwright/test": "^1.58.0",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.7.3",
+    "wrangler": "^4.40.0"
+  }
+}
