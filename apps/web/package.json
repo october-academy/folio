@@ -43,5 +43,33 @@
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",
     "wrangler": "^4.105.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "FOLIO_ADMIN_TOKEN": {
+        "description": "Editor admin token — gates /admin in single-tenant (token) mode. Use a long random string."
+      },
+      "FOLIO_AUTH_MODE": {
+        "description": "\"token\" (single-tenant, default) or \"access\" (Cloudflare Access multi-user)."
+      },
+      "NEXT_PUBLIC_SITE_URL": {
+        "description": "Public site URL for OG images + canonical links, e.g. https://your-folio.workers.dev"
+      },
+      "NEXT_PUBLIC_POSTHOG_KEY": {
+        "description": "PostHog project API key (optional) — enables folio_page_view / folio_link_click analytics."
+      },
+      "NEXT_PUBLIC_POSTHOG_HOST": {
+        "description": "PostHog host (optional), default https://us.i.posthog.com"
+      },
+      "FOLIO_FAVICON": {
+        "description": "\"on\" (default) self-hosts favicons for non-brand links; set \"off\" to disable third-party fetch."
+      },
+      "ALMANAC_URL": {
+        "description": "Optional — base URL of your Almanac deploy for full click→signup→revenue attribution."
+      },
+      "ALMANAC_API_KEY": {
+        "description": "Optional — Almanac API key (x-api-key); set together with ALMANAC_URL."
+      }
+    }
   }
 }

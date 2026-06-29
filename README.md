@@ -32,33 +32,40 @@ Folio is an open-source, self-hostable [Linktree](https://linktr.ee) alternative
   **clicks · signups · conversions · revenue** — *which link earned a paying customer*. Unset, Folio
   runs fully standalone on the PostHog path; every Almanac call degrades gracefully on failure.
 
-## 5-minute deploy (Cloudflare)
+## Deploy to Cloudflare
+
+### One-click
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/october-academy/folio)
 
+The button forks the repo and walks you through setup. Cloudflare reads
+[`apps/web/wrangler.jsonc`](apps/web/wrangler.jsonc), **auto-provisions the D1 database + KV namespace**
+(and writes their IDs back into the config), and prompts for each secret/var (descriptions come from
+the `cloudflare.bindings` block in [`apps/web/package.json`](apps/web/package.json)). During setup:
+
+- **Root directory:** `apps/web` · **Build command:** `bunx opennextjs-cloudflare build` (this is a
+  Next.js app on the [OpenNext](https://opennext.js.org/cloudflare) Cloudflare adapter).
+- **Set `FOLIO_ADMIN_TOKEN`** (a long random string — gates the `/admin` editor) and
+  `NEXT_PUBLIC_SITE_URL` (your `*.workers.dev` URL). PostHog + Almanac vars are optional.
+- **After the first deploy, apply the D1 schema** (one time):
+  ```bash
+  bunx wrangler d1 migrations apply folio --remote
+  ```
+
+### Manual (CLI)
+
 ```bash
-# 1. Clone + install
-git clone https://github.com/october-academy/folio.git && cd folio
-bun install
-
-# 2. Create the D1 database and apply the schema
-cd apps/web
-bunx wrangler d1 create folio          # copy the database_id into wrangler.jsonc
+git clone https://github.com/october-academy/folio.git && cd folio && bun install && cd apps/web
+bunx wrangler d1 create folio                    # paste database_id into wrangler.jsonc
 bunx wrangler d1 migrations apply folio --remote
-
-# 3. Create the KV namespace for the public-page cache
-bunx wrangler kv namespace create FOLIO_CACHE   # copy the id into wrangler.jsonc
-
-# 4. Set your editor token + PostHog key as secrets
+bunx wrangler kv namespace create FOLIO_CACHE    # paste id into wrangler.jsonc
 bunx wrangler secret put FOLIO_ADMIN_TOKEN
-echo 'NEXT_PUBLIC_POSTHOG_KEY=phc_xxx' >> .dev.vars   # for local; set as var/secret for prod
-
-# 5. Build + deploy
 bunx opennextjs-cloudflare build && bunx wrangler deploy
 ```
 
 Open `https://<your-worker>.workers.dev/admin`, paste your `FOLIO_ADMIN_TOKEN`, and build your page.
-Your public page is at `/@<slug>`.
+Your public page is at `/@<slug>`. For full click→signup→revenue attribution, also deploy the sibling
+[Almanac](https://github.com/october-academy/almanac) Worker and set `ALMANAC_URL` + `ALMANAC_API_KEY`.
 
 ### Custom domain
 
