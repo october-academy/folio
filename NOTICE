@@ -1,0 +1,29 @@
+Folio
+Copyright (c) 2026 October Academy
+Licensed under the MIT License (see LICENSE).
+
+================================================================================
+Third-party assets
+================================================================================
+
+This product includes brand-button styles and icons developed by the LittleLink
+project, lifted verbatim under the MIT License:
+
+  LittleLink — https://github.com/sethcottle/littlelink
+  Copyright 2019-2024 Seth Cottle
+  Licensed under the MIT License (http://www.opensource.org/licenses/mit-license.php)
+
+  Lifted assets:
+    - packages/buttons/brands.css     (per-brand button CSS variables)
+    - packages/buttons/icons/*.svg    (full-color brand icons, unmodified)
+
+  See packages/buttons/LICENSE for the full LittleLink MIT license text.
+
+================================================================================
+Clean-room references (no code included)
+================================================================================
+
+LinkStack — https://github.com/LinkStackOrg/LinkStack (AGPL-3.0, PHP/Laravel)
+  Used only as a conceptual reference for the typed-block taxonomy and the
+  favicon-fetch pattern. No LinkStack code is copied, ported, or derived here.
+  Folio carries no AGPL runtime dependency.

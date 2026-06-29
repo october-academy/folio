@@ -1,0 +1,16 @@
+@folio/buttons
+Copyright (c) 2026 October Academy — MIT (see repository LICENSE).
+
+This package lifts brand-button assets verbatim from the LittleLink project:
+
+  LittleLink — https://github.com/sethcottle/littlelink
+  Copyright 2019-2024 Seth Cottle — MIT License (see ./LICENSE)
+
+Lifted assets:
+  - brands.css                  per-brand button CSS variables (unmodified)
+  - icons/*.svg                 full-color brand icons (unmodified)
+  - littlelink-catalog.json     brand → { icon, label, alt }, extracted from
+                                LittleLink's index.html (factual mapping data)
+
+src/brands.generated.ts is produced by scripts/build-brands.ts from the assets
+above. No recoloring is applied to the icons.

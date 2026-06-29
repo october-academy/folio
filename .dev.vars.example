@@ -1,0 +1,24 @@
+# Folio — local dev secrets.
+# Copy to apps/web/.dev.vars (git-ignored) and fill in. Cloudflare reads .dev.vars
+# during `wrangler dev`; Next dev reads .dev.vars via OpenNext's getCloudflareContext.
+
+# --- Editor auth (single-tenant, v0.1) ---
+# The editor at /admin is gated by this token. Use a long random string.
+FOLIO_ADMIN_TOKEN="change-me-to-a-long-random-string"
+# Opaque owner id for the single Folio page on this deploy.
+FOLIO_OWNER_ID="owner"
+
+# --- PostHog (standalone analytics path) ---
+# Standalone Folio fires folio_page_view / folio_link_click to PostHog.
+NEXT_PUBLIC_POSTHOG_KEY=""
+NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
+
+# --- Public site URL (OG image + canonical links) ---
+NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+
+# --- Almanac integration (OPTIONAL — full click→signup→revenue attribution) ---
+# v0.2. When both are set, each link block is registered as an Almanac short link
+# carrying a click_id, joining clicks to Almanac's click→signup→revenue ledger.
+# When unset, link clicks fire a PostHog `folio_link_click` event directly.
+ALMANAC_URL=""
+ALMANAC_API_KEY=""

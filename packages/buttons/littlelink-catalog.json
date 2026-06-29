@@ -1,0 +1,462 @@
+{
+  "amazon": {
+    "icon": "amazon",
+    "label": "Amazon Wishlist",
+    "alt": "Amazon Wishlist Logo"
+  },
+  "amazon-music": {
+    "icon": "amazon-music",
+    "label": "Amazon Music",
+    "alt": "Amazon Music Logo"
+  },
+  "apple-music": {
+    "icon": "apple-music",
+    "label": "Apple Music",
+    "alt": "Apple Music Logo"
+  },
+  "apple-music-alt": {
+    "icon": "apple-music-alt",
+    "label": "Apple Music",
+    "alt": "Apple Music Logo"
+  },
+  "apple-podcasts": {
+    "icon": "apple-podcasts",
+    "label": "Apple Podcasts",
+    "alt": "Apple Podcasts Logo"
+  },
+  "apple-podcasts-alt": {
+    "icon": "apple-podcasts-alt",
+    "label": "Apple Podcasts",
+    "alt": "Apple Podcasts Logo"
+  },
+  "appstore": {
+    "icon": "apple",
+    "label": "Apple",
+    "alt": "Apple Logo"
+  },
+  "bandcamp": {
+    "icon": "bandcamp",
+    "label": "Bandcamp",
+    "alt": "Bandcamp Logo"
+  },
+  "behance": {
+    "icon": "behance",
+    "label": "Behance",
+    "alt": "Behance Logo"
+  },
+  "bluesky": {
+    "icon": "bluesky",
+    "label": "Bluesky",
+    "alt": "Bluesky Logo"
+  },
+  "bluesky-alt": {
+    "icon": "bluesky-alt",
+    "label": "Bluesky",
+    "alt": "Bluesky Logo"
+  },
+  "cal": {
+    "icon": "cal",
+    "label": "Cal.com",
+    "alt": "Cal.com Logo"
+  },
+  "calendly": {
+    "icon": "calendly",
+    "label": "Calendly",
+    "alt": "Calendly Logo"
+  },
+  "cash-app": {
+    "icon": "cash-app-dollar",
+    "label": "Cash App",
+    "alt": "Cash App Logo"
+  },
+  "coffee": {
+    "icon": "buy-me-a-coffee",
+    "label": "Buy Me A Coffee",
+    "alt": "Buy Me A Coffee Logo"
+  },
+  "default": {
+    "icon": "littlelink",
+    "label": "LittleLink",
+    "alt": "LittleLink Logo"
+  },
+  "dev-to": {
+    "icon": "dev-to",
+    "label": "Dev.to",
+    "alt": "Dev.to Logo"
+  },
+  "discogs": {
+    "icon": "discogs",
+    "label": "Discogs",
+    "alt": "Discogs Logo"
+  },
+  "discogs-alt": {
+    "icon": "discogs-alt",
+    "label": "Discogs",
+    "alt": "Discogs Logo"
+  },
+  "discord": {
+    "icon": "discord",
+    "label": "Discord",
+    "alt": "Discord Logo"
+  },
+  "dribbble": {
+    "icon": "dribbble",
+    "label": "Dribbble",
+    "alt": "Dribbble Logo"
+  },
+  "etsy": {
+    "icon": "etsy",
+    "label": "Etsy",
+    "alt": "Etsy Logo"
+  },
+  "faceb": {
+    "icon": "facebook",
+    "label": "Facebook",
+    "alt": "Facebook Logo"
+  },
+  "figma": {
+    "icon": "figma",
+    "label": "Figma",
+    "alt": "Figma Logo"
+  },
+  "fiverr": {
+    "icon": "fiverr",
+    "label": "Fiverr",
+    "alt": "Fiverr Logo"
+  },
+  "flickr": {
+    "icon": "flickr",
+    "label": "Flickr",
+    "alt": "Flickr Logo"
+  },
+  "github": {
+    "icon": "github",
+    "label": "GitHub",
+    "alt": "GitHub Logo"
+  },
+  "gitlab": {
+    "icon": "gitlab",
+    "label": "GitLab",
+    "alt": "GitLab Logo"
+  },
+  "gofundme": {
+    "icon": "gofundme",
+    "label": "GoFundMe",
+    "alt": "GoFundMe Logo"
+  },
+  "goodreads": {
+    "icon": "goodreads",
+    "label": "Goodreads",
+    "alt": "Goodreads Logo"
+  },
+  "google-black": {
+    "icon": "google-drive",
+    "label": "Google Drive",
+    "alt": "Google Drive Logo"
+  },
+  "google-scholar": {
+    "icon": "google-scholar",
+    "label": "Google Scholar",
+    "alt": "Google Scholar Logo"
+  },
+  "hashnode": {
+    "icon": "hashnode",
+    "label": "Hashnode",
+    "alt": "Hashnode Logo"
+  },
+  "instagram": {
+    "icon": "instagram",
+    "label": "Instagram",
+    "alt": "Instagram Logo"
+  },
+  "invites": {
+    "icon": "apple-invites",
+    "label": "Apple Invites",
+    "alt": "Apple Invites Logo"
+  },
+  "kick": {
+    "icon": "kick",
+    "label": "Kick",
+    "alt": "Kick Logo"
+  },
+  "kick-alt": {
+    "icon": "kick-alt",
+    "label": "Kick",
+    "alt": "Kick Logo"
+  },
+  "kickstarter": {
+    "icon": "kickstarter",
+    "label": "Kickstarter",
+    "alt": "Kickstarter Logo"
+  },
+  "kit": {
+    "icon": "kit",
+    "label": "Kit",
+    "alt": "Kit Logo"
+  },
+  "ko-fi": {
+    "icon": "ko-fi",
+    "label": "Ko-fi",
+    "alt": "Ko-fi Logo"
+  },
+  "last-fm": {
+    "icon": "last-fm",
+    "label": "Last.fm",
+    "alt": ""
+  },
+  "letterboxd": {
+    "icon": "letterboxd",
+    "label": "Letterboxd",
+    "alt": ""
+  },
+  "line": {
+    "icon": "line",
+    "label": "Line",
+    "alt": "Line Logo"
+  },
+  "linked": {
+    "icon": "linkedin",
+    "label": "LinkedIn",
+    "alt": "LinkedIn Logo"
+  },
+  "mailchimp": {
+    "icon": "mailchimp",
+    "label": "Mailchimp",
+    "alt": "Mailchimp Logo"
+  },
+  "mastodon": {
+    "icon": "mastodon",
+    "label": "Mastodon",
+    "alt": "Mastodon Logo"
+  },
+  "matrix": {
+    "icon": "matrix",
+    "label": "Matrix",
+    "alt": "Matrix Logo"
+  },
+  "medium": {
+    "icon": "medium",
+    "label": "Medium",
+    "alt": "Medium Logo"
+  },
+  "meetup": {
+    "icon": "meetup",
+    "label": "Meetup",
+    "alt": "Meetup Logo"
+  },
+  "meetup-alt": {
+    "icon": "meetup-alt",
+    "label": "Meetup",
+    "alt": "Meetup Logo"
+  },
+  "messenger": {
+    "icon": "messenger",
+    "label": "Messenger",
+    "alt": "Messenger Logo"
+  },
+  "microsoft": {
+    "icon": "microsoft",
+    "label": "Microsoft",
+    "alt": "Microsoft Logo"
+  },
+  "notion": {
+    "icon": "notion",
+    "label": "Notion",
+    "alt": "Notion Logo"
+  },
+  "obsidian": {
+    "icon": "obsidian",
+    "label": "Obsidian",
+    "alt": "Obsidian Logo"
+  },
+  "onlyfans": {
+    "icon": "onlyfans",
+    "label": "OnlyFans",
+    "alt": "OnlyFans Logo"
+  },
+  "patreon": {
+    "icon": "patreon",
+    "label": "Patreon",
+    "alt": "Patreon Logo"
+  },
+  "paypal": {
+    "icon": "paypal",
+    "label": "PayPal",
+    "alt": "PayPal Logo"
+  },
+  "pinterest": {
+    "icon": "pinterest",
+    "label": "Pinterest",
+    "alt": "Pinterest Logo"
+  },
+  "playstore": {
+    "icon": "google-play",
+    "label": "Google Play Store",
+    "alt": "Google Play Store Logo"
+  },
+  "product-hunt": {
+    "icon": "product-hunt",
+    "label": "Product Hunt",
+    "alt": "Product Hunt Logo"
+  },
+  "reddit": {
+    "icon": "reddit",
+    "label": "Reddit",
+    "alt": "Reddit Logo"
+  },
+  "shop": {
+    "icon": "shop",
+    "label": "Shop",
+    "alt": "Shop Logo"
+  },
+  "signal": {
+    "icon": "signal",
+    "label": "Signal",
+    "alt": "Signal Logo"
+  },
+  "signal-alt": {
+    "icon": "signal-alt",
+    "label": "Signal",
+    "alt": "Signal Logo"
+  },
+  "slack": {
+    "icon": "slack",
+    "label": "Slack",
+    "alt": "Slack Logo"
+  },
+  "snapchat": {
+    "icon": "snapchat",
+    "label": "Snapchat",
+    "alt": "Snapchat Logo"
+  },
+  "soundcloud": {
+    "icon": "soundcloud",
+    "label": "SoundCloud",
+    "alt": "SoundCloud Logo"
+  },
+  "spotify": {
+    "icon": "spotify",
+    "label": "Spotify",
+    "alt": "Spotify Logo"
+  },
+  "spotify-alt": {
+    "icon": "spotify-alt",
+    "label": "Spotify",
+    "alt": "Spotify Logo"
+  },
+  "square": {
+    "icon": "square",
+    "label": "Square",
+    "alt": "Square Logo"
+  },
+  "stack-overflow": {
+    "icon": "stack-overflow",
+    "label": "Stack Overflow",
+    "alt": "Stack Overflow Logo"
+  },
+  "steam": {
+    "icon": "steam",
+    "label": "Steam",
+    "alt": "Steam Logo"
+  },
+  "steam-alt": {
+    "icon": "steam",
+    "label": "Steam",
+    "alt": "Steam Logo"
+  },
+  "strava": {
+    "icon": "strava",
+    "label": "Strava",
+    "alt": "Strava Logo"
+  },
+  "substack": {
+    "icon": "substack",
+    "label": "Substack",
+    "alt": "Substack Logo"
+  },
+  "telegram": {
+    "icon": "telegram",
+    "label": "Telegram",
+    "alt": "Telegram Logo"
+  },
+  "threads": {
+    "icon": "threads",
+    "label": "Threads",
+    "alt": "Threads Logo"
+  },
+  "threema": {
+    "icon": "threema",
+    "label": "Threema",
+    "alt": "Threema Logo"
+  },
+  "tiktok": {
+    "icon": "tiktok",
+    "label": "TikTok",
+    "alt": "TikTok Logo"
+  },
+  "trello": {
+    "icon": "trello",
+    "label": "Trello",
+    "alt": "Trello Logo"
+  },
+  "tumb": {
+    "icon": "tumblr",
+    "label": "Tumblr",
+    "alt": "Tumblr Logo"
+  },
+  "twitch": {
+    "icon": "twitch",
+    "label": "Twitch",
+    "alt": "Twitch Logo"
+  },
+  "unsplash": {
+    "icon": "unsplash",
+    "label": "Unsplash",
+    "alt": "Unsplash Logo"
+  },
+  "venmo": {
+    "icon": "venmo",
+    "label": "Venmo",
+    "alt": "Venmo Logo"
+  },
+  "vimeo": {
+    "icon": "vimeo",
+    "label": "Vimeo",
+    "alt": "Vimeo Logo"
+  },
+  "vsco": {
+    "icon": "vsco",
+    "label": "VSCO",
+    "alt": "VSCO Logo"
+  },
+  "whatsapp": {
+    "icon": "whatsapp",
+    "label": "WhatsApp",
+    "alt": "WhatsApp Logo"
+  },
+  "wordpress": {
+    "icon": "wordpress",
+    "label": "WordPress",
+    "alt": "WordPress Logo"
+  },
+  "x": {
+    "icon": "x",
+    "label": "X",
+    "alt": "X Logo"
+  },
+  "yt": {
+    "icon": "youtube",
+    "label": "YouTube",
+    "alt": "YouTube Logo"
+  },
+  "yt-alt": {
+    "icon": "youtube-alt",
+    "label": "YouTube",
+    "alt": "YouTube Logo"
+  },
+  "zoom": {
+    "icon": "zoom",
+    "label": "Zoom",
+    "alt": "Zoom Logo"
+  }
+}
