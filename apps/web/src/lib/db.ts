@@ -249,6 +249,44 @@ export async function deleteBlock(id: string, pageId: string): Promise<void> {
   await db().prepare("DELETE FROM blocks WHERE id = ? AND page_id = ?").bind(id, pageId).run();
 }
 
+export async function deleteAllBlocks(pageId: string): Promise<void> {
+  await db().prepare("DELETE FROM blocks WHERE page_id = ?").bind(pageId).run();
+}
+
+/** Insert many blocks in one batch (used by import). */
+export async function bulkCreateBlocks(
+  pageId: string,
+  blocks: Array<{
+    type: BlockType;
+    data: BlockData;
+    position: number;
+    isVisible: boolean;
+    pinned: boolean;
+  }>,
+): Promise<void> {
+  if (blocks.length === 0) return;
+  const ts = nowMs();
+  const statements = blocks.map((b) =>
+    db()
+      .prepare(
+        `INSERT INTO blocks (id, page_id, type, position, is_visible, pinned, data, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(
+        crypto.randomUUID(),
+        pageId,
+        b.type,
+        b.position,
+        b.isVisible ? 1 : 0,
+        b.pinned ? 1 : 0,
+        JSON.stringify(b.data),
+        ts,
+        ts,
+      ),
+  );
+  await db().batch(statements);
+}
+
 export async function reorderBlocks(
   pageId: string,
   order: Array<{ id: string; position: number }>,

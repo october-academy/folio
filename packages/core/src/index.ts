@@ -3,6 +3,7 @@
 
 export * from "./blocks";
 export * from "./page";
+export * from "./portable";
 export * from "./slug";
 export * from "./types";
 export * from "./validation";

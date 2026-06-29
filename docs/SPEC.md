@@ -127,6 +127,7 @@ Dropped from the Agentic30 original: `landing_card` and the gamification toggles
 ## 9. Editor
 
 - Auth'd settings UI + **live preview** + **drag-and-drop reorder** (reuse the existing Agentic30 `BioSettingsClient`/`BioLivePreview`). Block CRUD + reorder API.
+- **Import/export (v1.0):** `GET /api/folio/export` downloads a portable, id-free JSON snapshot (`folio_export_version` + page + blocks); `POST /api/folio/import` replaces the current Folio's settings + blocks from such a doc (slug is preserved; invalid blocks are skipped and counted; deploy-specific Almanac codes are stripped). Schema + validation live in `@folio/core` (`buildExport`/`parseImport`).
 - MCP tools (`get_folio`, `update_folio`, `manage_blocks`) — v0.2, shipped as `apps/mcp-server` (`@folio/mcp-server`). A thin stdio MCP server that drives the same authenticated editor HTTP API (so validation stays in one place); configured with `FOLIO_URL` + `FOLIO_ADMIN_TOKEN`. Create/edit a Folio from Claude Code / terminal — agentic-native, on-brand for the ICP.
 
 ## 10. Auth / ownership

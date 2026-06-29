@@ -8,14 +8,16 @@ import {
   ArrowUp,
   Check,
   Copy,
+  Download,
   Eye,
   EyeOff,
   GripVertical,
   Loader2,
   Plus,
   Trash2,
+  Upload,
 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Input, Select, Textarea } from "@/components/ui";
 import type { AlmanacStats } from "@/lib/almanac-util";
 import { cn } from "@/lib/utils";
@@ -57,6 +59,7 @@ export function FolioEditor() {
   const [copied, setCopied] = useState(false);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [almanacStats, setAlmanacStats] = useState<Record<string, AlmanacStats>>({});
+  const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setToken(localStorage.getItem(TOKEN_KEY));
@@ -206,6 +209,47 @@ export function FolioEditor() {
       setError(e instanceof Error ? e.message : "슬러그 변경 실패");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function exportFolio() {
+    setError(null);
+    try {
+      const res = await authFetch("/api/folio/export");
+      if (!res.ok) throw new Error("내보내기에 실패했습니다.");
+      const text = await res.text();
+      const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `folio-${slug || "export"}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      flash("백업을 내보냈습니다.");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "내보내기 실패");
+    }
+  }
+
+  async function importFolio(file: File) {
+    setError(null);
+    try {
+      const json = JSON.parse(await file.text());
+      const res = await authFetch("/api/folio/import", {
+        method: "POST",
+        body: JSON.stringify(json),
+      });
+      if (!res.ok) throw new Error((await errorOf(res)) ?? "가져오기에 실패했습니다.");
+      const result = (await res.json()) as { imported: number; skipped: number };
+      await load();
+      flash(
+        `${result.imported}개 블록을 가져왔습니다${
+          result.skipped ? ` (${result.skipped}개 건너뜀)` : ""
+        }.`,
+      );
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : "가져오기 실패 — 올바른 Folio JSON인지 확인하세요.",
+      );
     }
   }
 
@@ -430,6 +474,33 @@ export function FolioEditor() {
                   저장
                 </Button>
               </div>
+            </section>
+
+            {/* Backup / import */}
+            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal-sm">
+              <h2 className="mb-3 text-xl font-black">백업 / 가져오기</h2>
+              <div className="flex flex-wrap gap-3">
+                <Button variant="outline" onClick={exportFolio}>
+                  <Download className="h-4 w-4" /> 내보내기 (JSON)
+                </Button>
+                <Button variant="outline" onClick={() => importInputRef.current?.click()}>
+                  <Upload className="h-4 w-4" /> 가져오기
+                </Button>
+                <input
+                  ref={importInputRef}
+                  type="file"
+                  accept="application/json,.json"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) void importFolio(file);
+                    e.target.value = "";
+                  }}
+                />
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">
+                가져오기는 현재 블록과 설정을 덮어씁니다. 슬러그는 유지됩니다.
+              </p>
             </section>
 
             {/* Blocks */}
