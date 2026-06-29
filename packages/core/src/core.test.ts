@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 import { describe, expect, test } from "bun:test";
 import { MAX_BLOCKS, normalizeBlockData, normalizeReorderPayload } from "./blocks";
-import { normalizeSocials, validateSocials } from "./page";
+import { normalizeSocials, normalizeTheme, THEMES, validateSocials } from "./page";
 import { isReservedSlug, validateSlug } from "./slug";
 import {
   extractYouTubeId,
@@ -240,5 +240,19 @@ describe("reorder + socials", () => {
   test("validateSocials returns Korean error for bad url", () => {
     const r = validateSocials([{ brand: "x", url: "http://x.com" }]);
     expect(r).toHaveProperty("error");
+  });
+});
+
+describe("themes", () => {
+  test("normalizeTheme accepts known presets, falls back to auto", () => {
+    expect(normalizeTheme("dark")).toBe("dark");
+    expect(normalizeTheme("mint")).toBe("mint");
+    expect(normalizeTheme("midnight")).toBe("midnight");
+    expect(normalizeTheme("not-a-theme")).toBe("auto");
+    expect(normalizeTheme(undefined)).toBe("auto");
+  });
+
+  test("every THEME normalizes back to itself", () => {
+    for (const t of THEMES) expect(normalizeTheme(t)).toBe(t);
   });
 });

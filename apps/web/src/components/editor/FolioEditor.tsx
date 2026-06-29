@@ -27,6 +27,7 @@ import {
   type EditorBlock,
   reorderBlocks,
   type SocialDraft,
+  THEME_OPTIONS,
 } from "./editor-helpers";
 import { LivePreview } from "./LivePreview";
 
@@ -404,9 +405,11 @@ export function FolioEditor() {
                 </Field>
                 <Field label="테마">
                   <Select value={theme} onChange={(e) => setTheme(e.target.value)}>
-                    <option value="auto">자동 (시스템)</option>
-                    <option value="light">라이트</option>
-                    <option value="dark">다크</option>
+                    {THEME_OPTIONS.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
                   </Select>
                 </Field>
                 <SocialsEditor socials={socials} setSocials={setSocials} />

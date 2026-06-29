@@ -12,8 +12,14 @@ export type Social = { brand: string; url: string };
 
 export const MAX_SOCIALS = 6;
 
-export const THEMES = ["auto", "light", "dark"] as const;
+/**
+ * Theme presets. `auto`/`light`/`dark` are the base modes; the rest are named
+ * CSS-variable palettes defined as `.theme-<name>` in globals.css (SPEC §8).
+ */
+export const THEMES = ["auto", "light", "dark", "mint", "grape", "sunset", "midnight"] as const;
 export type Theme = (typeof THEMES)[number];
+
+const THEME_SET: ReadonlySet<string> = new Set(THEMES);
 
 export const socialSchema = z.object({
   brand: z.string().regex(BRAND_KEY_PATTERN),
@@ -24,7 +30,7 @@ export const socialSchema = z.object({
 export type FolioSettings = Record<string, unknown>;
 
 export function normalizeTheme(value: unknown): Theme {
-  return value === "light" || value === "dark" ? value : "auto";
+  return typeof value === "string" && THEME_SET.has(value) ? (value as Theme) : "auto";
 }
 
 export function normalizeSettings(value: unknown): FolioSettings {

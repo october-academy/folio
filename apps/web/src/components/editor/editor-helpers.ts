@@ -2,6 +2,17 @@
 import { BRAND_KEYS, BRANDS } from "@folio/buttons";
 import type { BlockType } from "@folio/core";
 
+/** Theme presets surfaced in the editor (value must be in @folio/core THEMES). */
+export const THEME_OPTIONS: Array<{ value: string; label: string }> = [
+  { value: "auto", label: "자동 (시스템)" },
+  { value: "light", label: "라이트" },
+  { value: "dark", label: "다크" },
+  { value: "mint", label: "민트" },
+  { value: "grape", label: "그레이프" },
+  { value: "sunset", label: "선셋" },
+  { value: "midnight", label: "미드나잇" },
+];
+
 export const BLOCK_TYPE_OPTIONS: Array<{ value: BlockType; label: string }> = [
   { value: "link", label: "링크" },
   { value: "heading", label: "헤딩" },
