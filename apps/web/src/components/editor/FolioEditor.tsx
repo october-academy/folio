@@ -474,7 +474,7 @@ export function FolioEditor() {
             <AnalyticsPanel blocks={blocks} stats={almanacStats} enabled={almanacEnabled} />
 
             {/* Profile */}
-            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal-sm">
+            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal sm:p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-xl font-black">프로필</h2>
                 <Button onClick={saveProfile} disabled={saving}>
@@ -545,7 +545,7 @@ export function FolioEditor() {
             </section>
 
             {/* Slug */}
-            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal-sm">
+            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal sm:p-6">
               <h2 className="mb-3 text-xl font-black">슬러그</h2>
               <div className="flex gap-3">
                 <Input
@@ -561,7 +561,7 @@ export function FolioEditor() {
             </section>
 
             {/* Backup / import */}
-            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal-sm">
+            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal sm:p-6">
               <h2 className="mb-3 text-xl font-black">백업 / 가져오기</h2>
               <div className="flex flex-wrap gap-3">
                 <Button variant="outline" onClick={exportFolio}>
@@ -588,7 +588,7 @@ export function FolioEditor() {
             </section>
 
             {/* Blocks */}
-            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal-sm">
+            <section className="border-[3px] border-foreground bg-background p-5 shadow-brutal sm:p-6">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <h2 className="text-xl font-black">블록</h2>
                 <div className="flex gap-2">
