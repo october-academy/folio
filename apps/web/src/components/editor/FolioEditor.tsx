@@ -782,6 +782,50 @@ function BlockEditor({
           />
         </div>
       ) : null}
+
+      {block.type === "vcard" ? (
+        <div className="flex flex-col gap-2">
+          <Input
+            value={String(d.name ?? "")}
+            onChange={(e) => onUpdateData(block.id, { name: e.target.value })}
+            placeholder="이름 *"
+          />
+          <Input
+            value={String(d.label ?? "")}
+            onChange={(e) => onUpdateData(block.id, { label: e.target.value })}
+            placeholder="버튼 라벨 (예: 연락처 저장)"
+          />
+          <div className="grid grid-cols-2 gap-2">
+            <Input
+              value={String(d.org ?? "")}
+              onChange={(e) => onUpdateData(block.id, { org: e.target.value })}
+              placeholder="회사/소속"
+            />
+            <Input
+              value={String(d.role ?? "")}
+              onChange={(e) => onUpdateData(block.id, { role: e.target.value })}
+              placeholder="직함"
+            />
+            <Input
+              type="email"
+              value={String(d.email ?? "")}
+              onChange={(e) => onUpdateData(block.id, { email: e.target.value })}
+              placeholder="이메일"
+            />
+            <Input
+              type="tel"
+              value={String(d.phone ?? "")}
+              onChange={(e) => onUpdateData(block.id, { phone: e.target.value })}
+              placeholder="전화"
+            />
+          </div>
+          <Input
+            value={String(d.url ?? "")}
+            onChange={(e) => onUpdateData(block.id, { url: e.target.value })}
+            placeholder="웹사이트 (선택)"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

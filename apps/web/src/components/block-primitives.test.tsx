@@ -2,7 +2,13 @@
 import { describe, expect, test } from "bun:test";
 import { BrandButton } from "@folio/buttons";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DividerBlock, HeadingBlock, TextBlock, YouTubeBlock } from "./block-primitives";
+import {
+  DividerBlock,
+  HeadingBlock,
+  TextBlock,
+  VCardBlock,
+  YouTubeBlock,
+} from "./block-primitives";
 
 describe("block primitives render", () => {
   test("heading renders its text inside an h2", () => {
@@ -29,6 +35,15 @@ describe("block primitives render", () => {
     expect(html).toContain("My talk");
     // No naked youtube.com (privacy: only the nocookie host).
     expect(html).not.toContain("//www.youtube.com");
+  });
+
+  test("vcard renders a downloadable data: link with the label", () => {
+    const html = renderToStaticMarkup(
+      <VCardBlock data={{ name: "Hogyun Yu", label: "연락처 저장", org: "October" }} />,
+    );
+    expect(html).toContain('href="data:text/vcard');
+    expect(html).toContain('download="hogyun-yu.vcf"');
+    expect(html).toContain("연락처 저장");
   });
 });
 

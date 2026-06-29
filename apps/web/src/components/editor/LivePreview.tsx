@@ -3,7 +3,7 @@
 
 import { getBrand } from "@folio/buttons";
 import { extractYouTubeId } from "@folio/core";
-import { Link2, Mail, Phone, Play } from "lucide-react";
+import { ContactRound, Link2, Mail, Phone, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { EditorBlock, SocialDraft } from "./editor-helpers";
 
@@ -82,6 +82,16 @@ function PreviewBlock({ block }: { block: EditorBlock }) {
         <span className="truncate">
           {String(d.title || (id ? "YouTube 영상" : "YouTube 링크 입력"))}
         </span>
+      </div>
+    );
+  }
+  if (block.type === "vcard") {
+    return (
+      <div className="flex items-center gap-2 border-[3px] border-foreground bg-background p-2.5 text-xs font-black shadow-brutal-sm">
+        <span className="inline-flex h-7 w-7 items-center justify-center border-[3px] border-foreground bg-accent text-accent-foreground">
+          <ContactRound className="h-3.5 w-3.5" />
+        </span>
+        <span className="truncate">{String(d.label || d.name || "연락처")}</span>
       </div>
     );
   }

@@ -175,6 +175,30 @@ describe("normalizeBlockData", () => {
     expect(normalizeBlockData("youtube", {})).toHaveProperty("error");
   });
 
+  test("vcard requires a name, normalizes contact fields", () => {
+    expect(
+      normalizeBlockData("vcard", {
+        name: "Hogyun Yu",
+        org: "October Academy",
+        role: "Founder",
+        email: "Hi@Oct.com",
+        phone: "+82 10 1234 5678",
+        url: "https://oct.com",
+      }),
+    ).toEqual({
+      type: "vcard",
+      data: {
+        name: "Hogyun Yu",
+        org: "October Academy",
+        role: "Founder",
+        email: "hi@oct.com",
+        phone: "+82 10 1234 5678",
+        url: "https://oct.com/",
+      },
+    });
+    expect(normalizeBlockData("vcard", { org: "no name" })).toHaveProperty("error");
+  });
+
   test("MAX_BLOCKS is a positive integer", () => {
     expect(MAX_BLOCKS).toBeGreaterThan(0);
   });

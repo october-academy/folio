@@ -8,9 +8,16 @@ import type {
   PhoneBlockData,
   PublicBlock,
   TextBlockData,
+  VCardBlockData,
   YouTubeBlockData,
 } from "@folio/core";
-import { DividerBlock, HeadingBlock, TextBlock, YouTubeBlock } from "./block-primitives";
+import {
+  DividerBlock,
+  HeadingBlock,
+  TextBlock,
+  VCardBlock,
+  YouTubeBlock,
+} from "./block-primitives";
 import { LinkBlock } from "./LinkBlock";
 import { EmailBlock, ImageBlock, PhoneBlock } from "./tracked-blocks";
 
@@ -32,6 +39,8 @@ export function BlockRenderer({ block, slug }: { block: PublicBlock; slug: strin
       return <ImageBlock id={block.id} slug={slug} data={block.data as ImageBlockData} />;
     case "youtube":
       return <YouTubeBlock data={block.data as YouTubeBlockData} />;
+    case "vcard":
+      return <VCardBlock data={block.data as VCardBlockData} />;
     default:
       return null;
   }

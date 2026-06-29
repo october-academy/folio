@@ -11,6 +11,7 @@ export const BLOCK_TYPE_OPTIONS: Array<{ value: BlockType; label: string }> = [
   { value: "phone", label: "전화" },
   { value: "image", label: "이미지" },
   { value: "youtube", label: "YouTube" },
+  { value: "vcard", label: "연락처(vCard)" },
 ];
 
 /** All brands, sorted by label, for the social/link brand pickers. */
@@ -56,6 +57,11 @@ export function createDraftBlock(type: BlockType): EditorBlock {
       return { ...base, data: { url: "https://", alt: "", href: "" } };
     case "youtube":
       return { ...base, data: { video_id: "", title: "" } };
+    case "vcard":
+      return {
+        ...base,
+        data: { name: "", label: "", org: "", role: "", email: "", phone: "", url: "" },
+      };
     default:
       return { ...base, data: { size: "md" } };
   }

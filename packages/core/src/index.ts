@@ -6,3 +6,4 @@ export * from "./page";
 export * from "./slug";
 export * from "./types";
 export * from "./validation";
+export * from "./vcard";

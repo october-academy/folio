@@ -24,6 +24,7 @@ export const BLOCK_TYPES = [
   "phone",
   "image",
   "youtube",
+  "vcard",
 ] as const;
 export type BlockType = (typeof BLOCK_TYPES)[number];
 export const BLOCK_TYPE_SET: ReadonlySet<string> = new Set(BLOCK_TYPES);
@@ -55,6 +56,17 @@ export type EmailBlockData = { email: string; title: string; description?: strin
 export type PhoneBlockData = { phone: string; title: string; description?: string };
 export type ImageBlockData = { url: string; alt: string; href?: string };
 export type YouTubeBlockData = { video_id: string; title?: string };
+export type VCardBlockData = {
+  name: string;
+  /** Button label, e.g. "연락처 저장". */
+  label?: string;
+  org?: string;
+  /** Job title. */
+  role?: string;
+  email?: string;
+  phone?: string;
+  url?: string;
+};
 
 export type BlockData =
   | LinkBlockData
@@ -64,7 +76,8 @@ export type BlockData =
   | EmailBlockData
   | PhoneBlockData
   | ImageBlockData
-  | YouTubeBlockData;
+  | YouTubeBlockData
+  | VCardBlockData;
 
 // --- zod schemas (structural; for MCP/external validation & type inference) --
 
@@ -102,6 +115,15 @@ export const imageDataSchema = z.object({
 export const youtubeDataSchema = z.object({
   video_id: z.string(),
   title: z.string().optional(),
+});
+export const vcardDataSchema = z.object({
+  name: z.string(),
+  label: z.string().optional(),
+  org: z.string().optional(),
+  role: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  url: z.string().optional(),
 });
 
 // --- Runtime normalization (the path API routes use) ------------------------
@@ -202,6 +224,32 @@ export function normalizeBlockData(
     return {
       type: blockType,
       data: { video_id: videoId, ...(title ? { title } : {}) },
+    };
+  }
+
+  if (blockType === "vcard") {
+    const name = sanitizeText(source.name, "", 120);
+    if (!name) return { error: "연락처 이름이 필요합니다" };
+    const label = sanitizeText(source.label, "", 60) || undefined;
+    const org = sanitizeText(source.org, "", 120) || undefined;
+    const role = sanitizeText(source.role, "", 120) || undefined;
+    const email = normalizeEmail(source.email) ?? undefined;
+    const phone = normalizePhone(source.phone) ?? undefined;
+    const url =
+      typeof source.url === "string"
+        ? (normalizeUrl(source.url, { allowHttpLocal: opts.allowHttpLocal }) ?? undefined)
+        : undefined;
+    return {
+      type: blockType,
+      data: {
+        name,
+        ...(label ? { label } : {}),
+        ...(org ? { org } : {}),
+        ...(role ? { role } : {}),
+        ...(email ? { email } : {}),
+        ...(phone ? { phone } : {}),
+        ...(url ? { url } : {}),
+      },
     };
   }
 
