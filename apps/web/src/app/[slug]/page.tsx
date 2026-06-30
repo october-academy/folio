@@ -24,20 +24,11 @@ export async function generateMetadata({
       description: page.description || undefined,
       url: page.page_url,
       type: "profile",
-      images: [
-        {
-          url: page.og_image_url,
-          width: 1200,
-          height: 630,
-          alt: page.display_name,
-        },
-      ],
     },
     twitter: {
       card: "summary_large_image",
       title: page.display_name,
       description: page.description || undefined,
-      images: [page.og_image_url],
     },
   };
 }

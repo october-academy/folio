@@ -25,7 +25,6 @@ export async function generateMetadata(): Promise<Metadata> {
       description: page.description || undefined,
       url: page.page_url,
       type: "profile",
-      images: [{ url: page.og_image_url, width: 1200, height: 630 }],
     },
   };
 }

@@ -100,5 +100,4 @@ export type PublicFolioPage = {
   socials: Social[];
   blocks: PublicBlock[];
   page_url: string;
-  og_image_url: string;
 };

@@ -350,6 +350,5 @@ export async function getPublicPage(slug: string): Promise<PublicFolioPage | nul
     socials: page.socials,
     blocks: publicBlocks,
     page_url: `${siteUrl}/@${page.slug}`,
-    og_image_url: `${siteUrl}/api/og/${page.slug}`,
   };
 }
