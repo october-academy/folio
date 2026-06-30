@@ -19,7 +19,8 @@
       "!**/next-env.d.ts",
       "!**/.next",
       "!**/.open-next",
-      "!**/dist"
+      "!**/dist",
+      "!**/src/vendor"
     ]
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },

@@ -15,11 +15,9 @@
     "lint": "biome check src",
     "sync:buttons": "node scripts/sync-buttons.mjs",
     "cf:build": "opennextjs-cloudflare build",
-    "deploy": "opennextjs-cloudflare build && wrangler deploy"
+    "deploy": "opennextjs-cloudflare build && wrangler d1 migrations apply DB --remote && wrangler deploy"
   },
   "dependencies": {
-    "@folio/buttons": "workspace:*",
-    "@folio/core": "workspace:*",
     "@types/qrcode-generator": "^1.0.6",
     "clsx": "^2.1.1",
     "lucide-react": "^1.22.0",

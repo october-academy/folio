@@ -56,8 +56,9 @@ prompts for each secret/var (descriptions come from the `cloudflare.bindings` bl
   bunx wrangler d1 migrations apply folio --remote
   ```
 
-> If the deploy flow auto-provisions D1/KV for you, just confirm the bindings and run the migration step.
-> Either way the migration is required once — Cloudflare does not run D1 migrations automatically.
+> The button auto-provisions D1 + KV and binds them, and the `deploy` script applies the D1 migrations
+> on every deploy (via the `DB` binding) — so the schema is created for you; you only fill in the
+> secrets/vars it prompts for. (Provisioning manually instead? Run the three commands above once.)
 
 ### Manual (CLI)
 
@@ -83,13 +84,53 @@ custom domain so OG images and canonical links resolve correctly.
 
 ## Local development
 
+`bun run dev` runs Next.js (Turbopack) with the D1/KV bindings served by a local
+[Miniflare](https://miniflare.dev) instance — backed by the same `.wrangler/state` that `wrangler`
+uses, so the local database is real SQLite, not a mock.
+
 ```bash
 bun install
-cp .dev.vars.example apps/web/.dev.vars   # fill in FOLIO_ADMIN_TOKEN etc.
+cp apps/web/.dev.vars.example apps/web/.dev.vars   # then set FOLIO_ADMIN_TOKEN (see below)
 cd apps/web
-bunx wrangler d1 migrations apply folio --local
-bun run dev     # http://localhost:3000  (editor at /admin)
+bunx wrangler d1 migrations apply folio --local    # required once — creates the pages/blocks tables
+bun run dev                                         # http://localhost:3000  (editor at /admin)
 ```
+
+Open `http://localhost:3000/admin`, paste your `FOLIO_ADMIN_TOKEN`, and build your page; the public
+page is at `http://localhost:3000/@<slug>`.
+
+**Pick an admin token.** `/admin` stays locked until `FOLIO_ADMIN_TOKEN` is set in
+`apps/web/.dev.vars`. It is a secret *you choose* — any long random string works:
+
+```bash
+openssl rand -hex 32   # paste the output as FOLIO_ADMIN_TOKEN in apps/web/.dev.vars
+```
+
+**Common first-run snags** (all are required-once or restart issues):
+
+- `D1_ERROR: no such table: pages` → the local migration was skipped. Run
+  `bunx wrangler d1 migrations apply folio --local`. Neither Cloudflare nor Miniflare auto-migrates.
+- `/admin` returns 401 → `FOLIO_ADMIN_TOKEN` is empty, or you set it without restarting — `.dev.vars`
+  is loaded once at server start.
+- Edited `.dev.vars` or `next.config.ts`? **Restart `bun run dev`** — neither is hot-reloaded.
+- "Another next dev server is already running" → Next 16 allows one dev server per app dir; stop the
+  first one (`Ctrl+C`) before starting another.
+
+### Dev vs production
+
+Same app, two environments — the difference is *where config lives* and *which flags you pass*:
+
+| | Local dev | Production (Cloudflare) |
+| --- | --- | --- |
+| Secrets & vars | `apps/web/.dev.vars` (git-ignored) | `wrangler secret put …` + `wrangler.jsonc` / dashboard vars |
+| Admin token | `FOLIO_ADMIN_TOKEN` in `.dev.vars` | `bunx wrangler secret put FOLIO_ADMIN_TOKEN` |
+| D1 migrations | `wrangler d1 migrations apply folio --local` | `wrangler d1 migrations apply folio --remote` |
+| Run / ship | `bun run dev` | `bunx opennextjs-cloudflare build && bunx wrangler deploy` |
+| Data store | local Miniflare D1 + KV under `.wrangler/state` | your Cloudflare D1 + KV |
+| CSP `script-src` | includes `'unsafe-eval'` (React dev needs it) | stripped — no `unsafe-eval` |
+
+Migrations are **not** automatic in either environment — run the apply step once per environment,
+and again whenever you add a file to [`apps/web/migrations/`](apps/web/migrations).
 
 ## Architecture
 
@@ -110,6 +151,11 @@ folio/  (Turborepo + bun)
   embed), `vcard` (downloadable `.vcf`), `qr` (SSR SVG) — all with live preview.
 - **Favicon (v0.2):** links to non-brand hosts get a self-hosted, KV-cached favicon — Folio fetches
   it server-side so visitors never contact a third party. Disable with `FOLIO_FAVICON=off`.
+- **Self-contained `apps/web`:** `@folio/core` + `@folio/buttons` are vendored into
+  [`apps/web/src/vendor/`](apps/web/src/vendor) (synced from `packages/` by
+  [`scripts/sync-buttons.mjs`](apps/web/scripts/sync-buttons.mjs) on predev/prebuild) so the
+  **Deploy to Cloudflare** button can build from the `apps/web` subtree alone. The `packages/` copies
+  are the SSOT — edit those, never the vendored ones (the sync overwrites them).
 
 ## License
 

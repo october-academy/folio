@@ -25,7 +25,9 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "@folio/core": ["./src/vendor/core/index.ts"],
+      "@folio/buttons": ["./src/vendor/buttons/index.ts"]
     }
   },
   "include": [

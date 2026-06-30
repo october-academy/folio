@@ -6,13 +6,13 @@ const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.postho
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  // @folio/core and @folio/buttons are consumed as TypeScript source.
-  transpilePackages: ["@folio/core", "@folio/buttons"],
 
   async headers() {
+    // React dev mode (Turbopack) needs eval() for debugging features; never in production.
+    const isDev = process.env.NODE_ENV !== "production";
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
       "style-src 'self' 'unsafe-inline'",
       // favicons + user avatars + brand icons are remote/data images
       "img-src 'self' data: https:",
