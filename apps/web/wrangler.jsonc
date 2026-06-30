@@ -27,10 +27,15 @@
       "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
     }
   ],
+  // Non-secret config (plain vars, with defaults). Secrets — FOLIO_ADMIN_TOKEN,
+  // NEXT_PUBLIC_POSTHOG_KEY, ALMANAC_URL, ALMANAC_API_KEY — come from
+  // .dev.vars.example / the deploy prompt, NOT here (no key in both, no pre-filled secret).
   "vars": {
+    "FOLIO_AUTH_MODE": "token",
+    "FOLIO_OWNER_ID": "owner",
+    "FOLIO_FAVICON": "on",
     "NEXT_PUBLIC_SITE_URL": "http://localhost:3000",
-    "NEXT_PUBLIC_POSTHOG_HOST": "https://us.i.posthog.com",
-    "FOLIO_OWNER_ID": "owner"
+    "NEXT_PUBLIC_POSTHOG_HOST": "https://us.i.posthog.com"
   },
   "observability": {
     "enabled": true

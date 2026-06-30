@@ -1,33 +1,20 @@
-# Folio — local dev secrets.
-# Copy to apps/web/.dev.vars (git-ignored) and fill in. Cloudflare reads .dev.vars
-# during `wrangler dev`; Next dev reads .dev.vars via OpenNext's getCloudflareContext.
+# Folio — SECRETS only, for local `wrangler dev` + the Cloudflare deploy prompt.
+# Copy to apps/web/.dev.vars (git-ignored) and fill in.
+#
+# Non-secret config (FOLIO_AUTH_MODE, FOLIO_OWNER_ID, FOLIO_FAVICON,
+# NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_POSTHOG_HOST) lives in wrangler.jsonc `vars`
+# with sensible defaults — keep it OUT of here so the Cloudflare deploy setup
+# page doesn't prompt for the same key twice, and so no secret is pre-filled.
 
-# --- Editor auth ---
-# Auth mode: "token" (single-tenant, default) or "access" (Cloudflare Access multi-user).
-FOLIO_AUTH_MODE="token"
-# token mode: the editor at /admin is gated by this token. Use a long random string.
-FOLIO_ADMIN_TOKEN="change-me-to-a-long-random-string"
-# token mode: opaque owner id for the single Folio page on this deploy.
-FOLIO_OWNER_ID="owner"
-# access mode: put the Worker behind Cloudflare Access; Folio trusts the
-# Cf-Access-Authenticated-User-Email header and gives each user their own page.
+# REQUIRED — gates the /admin editor in token mode. Set a long random string
+# (e.g. `openssl rand -hex 32`). Left empty, /admin stays locked.
+FOLIO_ADMIN_TOKEN=""
 
-# --- PostHog (standalone analytics path) ---
-# Standalone Folio fires folio_page_view / folio_link_click to PostHog.
+# OPTIONAL — PostHog analytics. Publishable project key, inlined at build time.
+# Leave empty to run without analytics.
 NEXT_PUBLIC_POSTHOG_KEY=""
-NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
 
-# --- Public site URL (OG image + canonical links) ---
-NEXT_PUBLIC_SITE_URL="http://localhost:3000"
-
-# --- Favicon fetch (v0.2) ---
-# Non-brand link hosts get a self-hosted, KV-cached favicon (fetched server-side).
-# Set to "off" to disable third-party favicon fetching entirely.
-FOLIO_FAVICON="on"
-
-# --- Almanac integration (OPTIONAL — full click→signup→revenue attribution) ---
-# v0.2. When both are set, each link block is registered as an Almanac short link
-# carrying a click_id, joining clicks to Almanac's click→signup→revenue ledger.
-# When unset, link clicks fire a PostHog `folio_link_click` event directly.
+# OPTIONAL — full click→signup→revenue attribution via Almanac. Set BOTH to
+# enable; leave empty to run standalone on the PostHog path.
 ALMANAC_URL=""
 ALMANAC_API_KEY=""
